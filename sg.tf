@@ -1,12 +1,12 @@
 ### Security group for master of emr cluster
 resource "aws_security_group" "master" {
-  name                   = local.master_name
-  description            = "${local.master_name} EMR SG"
+  name                   = join("-", [local.name, "master"])
+  description            = format("%s EMR SG", join("-", [local.name, "master"]))
   vpc_id                 = var.vpc
   revoke_rules_on_delete = true
 
   tags {
-    Name = local.master_name
+    Name = join("-", [local.name, "master"])
   }
 }
 
@@ -34,13 +34,13 @@ resource "aws_security_group_rule" "master_egress_rules" {
 
 ### Security group for task runners of emr cluster
 resource "aws_security_group" "slave" {
-  name                   = local.slave_name
-  description            = "${local.slave_name} EMR SG"
+  name                   = join("-", [local.name, "slave"])
+  description            = format("%s EMR SG", join("-", [local.name, "slave"]))
   vpc_id                 = var.vpc
   revoke_rules_on_delete = true
 
   tags {
-    Name = local.slave_name
+    Name = join("-", [local.name, "slave"])
   }
 }
 
