@@ -5,7 +5,7 @@ resource "aws_security_group" "master" {
   vpc_id                 = var.vpc
   revoke_rules_on_delete = true
 
-  tags {
+  tags = {
     Name = join("-", [local.name, "master"])
   }
 }
@@ -39,7 +39,7 @@ resource "aws_security_group" "slave" {
   vpc_id                 = var.vpc
   revoke_rules_on_delete = true
 
-  tags {
+  tags = {
     Name = join("-", [local.name, "slave"])
   }
 }
