@@ -7,8 +7,7 @@ variable "release" {
 variable "applications" {
   description = "List of EMR applications"
   type        = list(string)
-
-  default = ["Spark", "Hadoop", "Hive", "HBase"]
+  default     = ["Spark", "Hadoop", "Hive", "HBase"]
 }
 
 variable "ssh_key" {
@@ -18,8 +17,6 @@ variable "ssh_key" {
 
 variable "bootstrap_action" {
   description = "definition of bootstrap action"
-  type        = list(string)
-
   default = [
     {
       path = "s3://emr-bootstrap/actions/run-if"
@@ -31,7 +28,6 @@ variable "bootstrap_action" {
 
 variable "instance_groups" {
   description = "list of instance groups"
-  type        = list(string)
   default = [
     {
       name           = "MasterInstanceGroup"
@@ -56,14 +52,11 @@ variable "instance_groups" {
 
 variable "master_ingress_rules" {
   description = "ingress list for security group allows"
-  type        = map(string)
   default     = {}
 }
 
 variable "master_egress_rules" {
   description = "egress list for security group allows"
-  type        = map(string)
-
   default = {
     "0" = ["0.0.0.0/0", "443", "443", "tcp", "https"]
     "1" = ["0.0.0.0/0", "123", "123", "udp", "time sync"]
@@ -72,13 +65,11 @@ variable "master_egress_rules" {
 
 variable "slave_ingress_rules" {
   description = "ingress list for security group allows"
-  type        = map(string)
   default     = {}
 }
 
 variable "slave_egress_rules" {
   description = "egress list for security group allows"
-  type        = map(string)
   default = {
     "0" = ["0.0.0.0/0", "443", "443", "tcp", "https"]
     "1" = ["0.0.0.0/0", "123", "123", "udp", "time sync"]
@@ -93,7 +84,6 @@ variable "custom_scale_policy" {
 ### Alarm
 variable "scale_out_alarms" {
   description = "metric alarm list for autoscaling trigger"
-  type        = map(string)
   default = {
     "0" = ["CPUUtilization", "GreaterThanOrEqualToThreshold", "2", "120", "80"]
   }
@@ -101,7 +91,6 @@ variable "scale_out_alarms" {
 
 variable "scale_in_alarms" {
   description = "metric alarm list for autoscaling trigger"
-  type        = map(string)
   default = {
     "0" = ["CPUUtilization", "LessThanThreshold", "2", "120", "20"]
   }
@@ -120,12 +109,12 @@ variable "vpc" {
 
 variable "azs" {
   description = "A comma-delimited list of availability zones for the VPC"
-  type        = string
+  type        = list(string)
 }
 
 variable "subnets" {
   description = "A comma-delimited list of the AWS IDs of the Subnets which the Ubuntu server will be deployed into"
-  type        = string
+  type        = list(string)
 }
 
 ### credentials

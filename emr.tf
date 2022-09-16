@@ -14,7 +14,7 @@ resource "aws_emr_cluster" "emr" {
   termination_protection            = false
   keep_job_flow_alive_when_no_steps = true
   service_role                      = aws_iam_role.svc.arn
-  bootstrap_action                  = var.bootstrap_action
+  #bootstrap_action                 = var.bootstrap_action
 
   ec2_attributes {
     #subnet_id                         = "${var.subnet}"
@@ -27,8 +27,7 @@ resource "aws_emr_cluster" "emr" {
     create_before_destroy = true
   }
 
-  tags = (merge(
-    map("Name", "${local.name}"),
-    map("env", "${var.stack}"),
-  ))
+  tags = merge(
+    { "Name" = local.name },
+  )
 }

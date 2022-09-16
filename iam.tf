@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "task" {
 }
 
 resource "aws_iam_role" "task" {
-  name               = local.slave_name
+  name               = join("-", [local.name, "slave"])
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.task.json
 }
@@ -51,6 +51,6 @@ resource "aws_iam_role_policy_attachment" "task" {
 }
 
 resource "aws_iam_instance_profile" "task" {
-  name = local.slave_name
+  name = join("-", [local.name, "slave"])
   role = aws_iam_role.task.name
 }
