@@ -83,8 +83,9 @@ variable "slave_ingress_rules" {
 variable "slave_egress_rules" {
   description = "egress list for security group allows"
   default = {
-    "0" = ["0.0.0.0/0", "443", "443", "tcp", "https"]
-    "1" = ["0.0.0.0/0", "123", "123", "udp", "time sync"]
+    "0" = ["0.0.0.0/0", "80", "80", "tcp", "http"]
+    "1" = ["0.0.0.0/0", "443", "443", "tcp", "https"]
+    "2" = ["0.0.0.0/0", "123", "123", "udp", "time sync"]
   }
 }
 
