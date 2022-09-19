@@ -53,7 +53,7 @@ resource "aws_iam_instance_profile" "ng" {
 resource "aws_security_group" "cp" {
   name                   = join("-", [local.name, "cp"])
   tags                   = merge(local.default-tags, var.tags)
-  description            = format("%s EMR SG", join("-", [local.name, "cp"]))
+  description            = format("additional security group for %s", join("-", [local.name, "cp"]))
   vpc_id                 = var.vpc
   revoke_rules_on_delete = true
 }
@@ -151,10 +151,9 @@ resource "aws_emr_cluster" "cp" {
 
 ### security/network
 resource "aws_security_group" "ng" {
-  name = join("-", [local.name, "ng"])
-  tags = merge(local.default-tags, var.tags)
-
-  description            = format("%s EMR SG", join("-", [local.name, "ng"]))
+  name                   = join("-", [local.name, "ng"])
+  tags                   = merge(local.default-tags, var.tags)
+  description            = format("additional security group for %s", join("-", [local.name, "ng"]))
   vpc_id                 = var.vpc
   revoke_rules_on_delete = true
 }
