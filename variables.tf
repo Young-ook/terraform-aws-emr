@@ -1,13 +1,13 @@
 ### Elastic MapReduce 
 variable "release" {
   description = "EMR release version"
-  default     = "emr-4.6.0"
+  default     = "emr-5.36.0"
 }
 
 variable "applications" {
   description = "List of EMR applications"
   type        = list(string)
-  default     = ["Spark", "Hadoop", "Hive", "HBase"]
+  default     = ["Spark", "Hadoop", "Hive"]
 }
 
 variable "ssh_key" {
@@ -24,6 +24,18 @@ variable "bootstrap_action" {
       args = ["instance.isMaster=true", "echo running on master node"]
     },
   ]
+}
+
+### network
+variable "subnets" {
+  description = "The list of subnet IDs to deploy your EKS cluster"
+  type        = list(string)
+}
+
+### emr cluster
+variable "cluster" {
+  description = "EMR cluster configuration"
+  default     = {}
 }
 
 variable "instance_groups" {
@@ -71,8 +83,9 @@ variable "slave_ingress_rules" {
 variable "slave_egress_rules" {
   description = "egress list for security group allows"
   default = {
-    "0" = ["0.0.0.0/0", "443", "443", "tcp", "https"]
-    "1" = ["0.0.0.0/0", "123", "123", "udp", "time sync"]
+    "0" = ["0.0.0.0/0", "80", "80", "tcp", "http"]
+    "1" = ["0.0.0.0/0", "443", "443", "tcp", "https"]
+    "2" = ["0.0.0.0/0", "123", "123", "udp", "time sync"]
   }
 }
 
@@ -109,11 +122,6 @@ variable "vpc" {
 
 variable "azs" {
   description = "A comma-delimited list of availability zones for the VPC"
-  type        = list(string)
-}
-
-variable "subnets" {
-  description = "A comma-delimited list of the AWS IDs of the Subnets which the Ubuntu server will be deployed into"
   type        = list(string)
 }
 

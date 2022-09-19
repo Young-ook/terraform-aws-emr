@@ -21,7 +21,7 @@ module "vpc" {
 # vpc
 module "emr" {
   source               = "../../"
-  name                 = "your_emr"
+  name                 = var.name
   region               = var.aws_region
   vpc                  = module.vpc.vpc.id
   subnets              = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
