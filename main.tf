@@ -85,10 +85,6 @@ data "template_file" "scale-policy" {
   template = file("${path.module}/scale-policy.tpl")
 }
 
-locals {
-  master_node_groups = lookup(var.cluster, "master_node_groups", local.default_master_node_groups)
-}
-
 resource "aws_emr_cluster" "cp" {
   name                              = local.name
   tags                              = merge(local.default-tags, var.tags)
@@ -108,15 +104,21 @@ resource "aws_emr_cluster" "cp" {
 
   master_instance_fleet {
     name = join("-", [local.name, "master-fleet"])
-    instance_type_configs {
-      instance_type = lookup(local.master_node_groups, "instance_type", local.default_master_node_groups.instance_type)
+
+    dynamic "instance_type_configs" {
+      for_each = { for k, v in lookup(var.master_node_groups, "instance_type_configs", local.default_instance_type_configs) : k => v }
+      content {
+        instance_type     = lookup(instance_type_configs.value, "instance_type", local.default_instance_type_config.instance_type)
+        weighted_capacity = lookup(instance_type_configs.value, "weighted_capacity", local.default_instance_type_config.weighted_capacity)
+      }
     }
     launch_specifications {
       on_demand_specification {
         allocation_strategy = "lowest-price"
       }
     }
-    target_on_demand_capacity = lookup(local.master_node_groups, "instance_count", local.default_master_node_groups.instance_count)
+
+    target_on_demand_capacity = lookup(var.master_node_groups, "target_on_demand_capacity", local.default_master_node_groups.target_on_demand_capacity)
   }
 
   core_instance_fleet {

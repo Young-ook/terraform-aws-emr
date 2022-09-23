@@ -2,8 +2,8 @@
 
 locals {
   default_master_node_groups = {
-    instance_type  = "m5.xlarge"
-    instance_count = 1
+    instance_type             = "m5.xlarge"
+    target_on_demand_capacity = 1
   }
   default_core_node_groups = {
     instance_type                  = "m5.xlarge"
