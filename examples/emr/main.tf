@@ -26,6 +26,7 @@ module "emr" {
   vpc                  = module.vpc.vpc.id
   subnets              = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
   azs                  = var.azs
+  task_node_groups     = var.task_node_groups
   master_ingress_rules = { "0" = ["10.0.0.0/8", "18888", "18888", "tcp"] }
   slave_ingress_rules  = { "0" = ["10.0.0.0/8", "18888", "18888", "tcp"] }
 }

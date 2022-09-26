@@ -17,6 +17,21 @@ variable "azs" {
   type        = list(string)
   default     = ["us-east-1a", "us-east-1c", "us-east-1d"]
 }
+### cluster
+variable "master_node_groups" {
+  description = "EMR master node groups configuration"
+  default     = {}
+}
+
+variable "core_node_groups" {
+  description = "EMR core node groups configuration"
+  default     = {}
+}
+
+variable "task_node_groups" {
+  description = "EMR task node groups configuration"
+  default     = {}
+}
 
 ### description
 variable "name" {
