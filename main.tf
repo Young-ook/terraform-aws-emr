@@ -108,8 +108,19 @@ resource "aws_emr_cluster" "cp" {
     dynamic "instance_type_configs" {
       for_each = { for k, v in lookup(var.master_node_groups, "instance_type_configs", local.default_instance_type_configs) : k => v }
       content {
-        instance_type     = lookup(instance_type_configs.value, "instance_type", local.default_instance_type_config.instance_type)
-        weighted_capacity = lookup(instance_type_configs.value, "weighted_capacity", local.default_instance_type_config.weighted_capacity)
+        bid_price= lookup(instance_type_configs.value, "bid_price", local.default_instance_type_config.bid_price)
+        bid_price_as_percentage_of_on_demand_price = lookup(instance_type_configs.value, "bid_price_as_percentage_of_on_demand_price", local.default_instance_type_config.bid_price_as_percentage_of_on_demand_price)
+        instance_type                              = lookup(instance_type_configs.value, "instance_type", local.default_instance_type_config.instance_type)
+        weighted_capacity                          = lookup(instance_type_configs.value, "weighted_capacity", local.default_instance_type_config.weighted_capacity)
+
+        dynamic "ebs_config" {
+          for_each = { for k, v in instance_type_configs.value : k => v if k == "ebs_config" }
+          content {
+            size                 = lookup(ebs_config.value, "size", local.default_instance_type_config.ebs_config.size)
+            type                 = lookup(ebs_config.value, "type", local.default_instance_type_config.ebs_config.type)
+            volumes_per_instance = lookup(ebs_config.value, "volumes_per_instance", local.default_instance_type_config.ebs_config.volumes_per_instance)
+          }
+        }
       }
     }
     launch_specifications {
@@ -127,6 +138,7 @@ resource "aws_emr_cluster" "cp" {
     dynamic "instance_type_configs" {
       for_each = { for k, v in lookup(var.core_node_groups, "instance_type_configs", local.default_instance_type_configs) : k => v }
       content {
+        bid_price= lookup(instance_type_configs.value, "bid_price", local.default_instance_type_config.bid_price)
         bid_price_as_percentage_of_on_demand_price = lookup(instance_type_configs.value, "bid_price_as_percentage_of_on_demand_price", local.default_instance_type_config.bid_price_as_percentage_of_on_demand_price)
         instance_type                              = lookup(instance_type_configs.value, "instance_type", local.default_instance_type_config.instance_type)
         weighted_capacity                          = lookup(instance_type_configs.value, "weighted_capacity", local.default_instance_type_config.weighted_capacity)
@@ -134,9 +146,9 @@ resource "aws_emr_cluster" "cp" {
         dynamic "ebs_config" {
           for_each = { for k, v in instance_type_configs.value : k => v if k == "ebs_config" }
           content {
-            size                 = lookup(ebs_config.value, "size", local.default_instance_type_config.default_ebs.size)
-            type                 = lookup(ebs_config.value, "type", local.default_instance_type_config.default_ebs.type)
-            volumes_per_instance = lookup(ebs_config.value, "volumes_per_instance", local.default_instance_type_config.default_ebs.volumes_per_instance)
+            size                 = lookup(ebs_config.value, "size", local.default_instance_type_config.ebs_config.size)
+            type                 = lookup(ebs_config.value, "type", local.default_instance_type_config.ebs_config.type)
+            volumes_per_instance = lookup(ebs_config.value, "volumes_per_instance", local.default_instance_type_config.ebs_config.volumes_per_instance)
           }
         }
       }
