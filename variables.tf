@@ -38,6 +38,11 @@ variable "cluster" {
   default     = {}
 }
 
+variable "master_node_groups" {
+  description = "EMR master node groups configuration"
+  default     = {}
+}
+
 variable "core_node_groups" {
   description = "EMR core node groups configuration"
   default     = {}

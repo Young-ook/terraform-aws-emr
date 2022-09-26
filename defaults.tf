@@ -2,8 +2,8 @@
 
 locals {
   default_master_node_groups = {
-    instance_type  = "m5.xlarge"
-    instance_count = 1
+    instance_type             = "m5.xlarge"
+    target_on_demand_capacity = 1
   }
   default_core_node_groups = {
     instance_type                  = "m5.xlarge"
@@ -13,10 +13,11 @@ locals {
     target_spot_capacity           = 1
   }
   default_instance_type_config = {
+    bid_price                                  = null
     bid_price_as_percentage_of_on_demand_price = 100
     instance_type                              = "m5.xlarge"
     weighted_capacity                          = 1
-    default_ebs_configs = {
+    ebs_config = {
       size                 = 100
       type                 = "gp2"
       volumes_per_instance = 1
