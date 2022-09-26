@@ -32,6 +32,16 @@ variable "subnets" {
   type        = list(string)
 }
 
+variable "additional_master_security_group" {
+  description = "Additional security group for master nodes"
+  default     = null
+}
+
+variable "additional_slave_security_group" {
+  description = "Additional security group for slave nodes"
+  default     = null
+}
+
 ### emr cluster
 variable "cluster" {
   description = "EMR cluster configuration"
@@ -75,33 +85,6 @@ variable "instance_groups" {
       }]
     },
   ]
-}
-
-variable "master_ingress_rules" {
-  description = "ingress list for security group allows"
-  default     = {}
-}
-
-variable "master_egress_rules" {
-  description = "egress list for security group allows"
-  default = {
-    "0" = ["0.0.0.0/0", "443", "443", "tcp", "https"]
-    "1" = ["0.0.0.0/0", "123", "123", "udp", "time sync"]
-  }
-}
-
-variable "slave_ingress_rules" {
-  description = "ingress list for security group allows"
-  default     = {}
-}
-
-variable "slave_egress_rules" {
-  description = "egress list for security group allows"
-  default = {
-    "0" = ["0.0.0.0/0", "80", "80", "tcp", "http"]
-    "1" = ["0.0.0.0/0", "443", "443", "tcp", "https"]
-    "2" = ["0.0.0.0/0", "123", "123", "udp", "time sync"]
-  }
 }
 
 variable "custom_scale_policy" {

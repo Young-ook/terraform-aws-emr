@@ -49,37 +49,6 @@ resource "aws_iam_instance_profile" "ng" {
   role = aws_iam_role.ng.name
 }
 
-### security/network
-resource "aws_security_group" "cp" {
-  name                   = join("-", [local.name, "cp"])
-  tags                   = merge(local.default-tags, var.tags)
-  description            = format("additional security group for %s", join("-", [local.name, "cp"]))
-  vpc_id                 = var.vpc
-  revoke_rules_on_delete = true
-}
-
-resource "aws_security_group_rule" "master_ingress_rules" {
-  count             = length(var.master_ingress_rules)
-  type              = "ingress"
-  cidr_blocks       = ["${element(var.master_ingress_rules[count.index], 0)}"]
-  from_port         = element(var.master_ingress_rules[count.index], 1)
-  to_port           = element(var.master_ingress_rules[count.index], 2)
-  protocol          = element(var.master_ingress_rules[count.index], 3)
-  description       = element(var.master_ingress_rules[count.index], 4)
-  security_group_id = aws_security_group.cp.id
-}
-
-resource "aws_security_group_rule" "master_egress_rules" {
-  count             = length(var.master_egress_rules)
-  type              = "egress"
-  cidr_blocks       = ["${element(var.master_egress_rules[count.index], 0)}"]
-  from_port         = element(var.master_egress_rules[count.index], 1)
-  to_port           = element(var.master_egress_rules[count.index], 2)
-  protocol          = element(var.master_egress_rules[count.index], 3)
-  description       = element(var.master_egress_rules[count.index], 4)
-  security_group_id = aws_security_group.cp.id
-}
-
 ### cluster/control
 data "template_file" "scale-policy" {
   template = file("${path.module}/scale-policy.tpl")
@@ -97,8 +66,8 @@ resource "aws_emr_cluster" "cp" {
 
   ec2_attributes {
     subnet_ids                        = var.subnets
-    additional_master_security_groups = aws_security_group.cp.id
-    additional_slave_security_groups  = aws_security_group.ng.id
+    additional_master_security_groups = var.additional_master_security_group
+    additional_slave_security_groups  = var.additional_slave_security_group
     instance_profile                  = aws_iam_instance_profile.ng.arn
   }
 
@@ -172,6 +141,7 @@ resource "aws_emr_cluster" "cp" {
   }
 }
 
+### cluster/work
 resource "aws_emr_instance_fleet" "dp" {
   cluster_id = aws_emr_cluster.cp.id
   name       = join("-", [local.name, "task-fleet"])
@@ -206,35 +176,4 @@ resource "aws_emr_instance_fleet" "dp" {
 
   target_on_demand_capacity = lookup(var.task_node_groups, "target_on_demand_capacity", local.default_task_node_groups.target_on_demand_capacity)
   target_spot_capacity      = lookup(var.task_node_groups, "target_spot_capacity", local.default_task_node_groups.target_spot_capacity)
-}
-
-### security/network
-resource "aws_security_group" "ng" {
-  name                   = join("-", [local.name, "ng"])
-  tags                   = merge(local.default-tags, var.tags)
-  description            = format("additional security group for %s", join("-", [local.name, "ng"]))
-  vpc_id                 = var.vpc
-  revoke_rules_on_delete = true
-}
-
-resource "aws_security_group_rule" "slave_ingress_rules" {
-  count             = length(var.slave_ingress_rules)
-  type              = "ingress"
-  cidr_blocks       = ["${element(var.slave_ingress_rules[count.index], 0)}"]
-  from_port         = element(var.slave_ingress_rules[count.index], 1)
-  to_port           = element(var.slave_ingress_rules[count.index], 2)
-  protocol          = element(var.slave_ingress_rules[count.index], 3)
-  description       = element(var.slave_ingress_rules[count.index], 4)
-  security_group_id = aws_security_group.ng.id
-}
-
-resource "aws_security_group_rule" "slave_egress_rules" {
-  count             = length(var.slave_egress_rules)
-  type              = "egress"
-  cidr_blocks       = ["${element(var.slave_egress_rules[count.index], 0)}"]
-  from_port         = element(var.slave_egress_rules[count.index], 1)
-  to_port           = element(var.slave_egress_rules[count.index], 2)
-  protocol          = element(var.slave_egress_rules[count.index], 3)
-  description       = element(var.slave_egress_rules[count.index], 4)
-  security_group_id = aws_security_group.ng.id
 }
