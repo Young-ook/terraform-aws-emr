@@ -108,7 +108,7 @@ resource "aws_emr_cluster" "cp" {
     dynamic "instance_type_configs" {
       for_each = { for k, v in lookup(var.master_node_groups, "instance_type_configs", local.default_instance_type_configs) : k => v }
       content {
-        bid_price= lookup(instance_type_configs.value, "bid_price", local.default_instance_type_config.bid_price)
+        bid_price                                  = lookup(instance_type_configs.value, "bid_price", local.default_instance_type_config.bid_price)
         bid_price_as_percentage_of_on_demand_price = lookup(instance_type_configs.value, "bid_price_as_percentage_of_on_demand_price", local.default_instance_type_config.bid_price_as_percentage_of_on_demand_price)
         instance_type                              = lookup(instance_type_configs.value, "instance_type", local.default_instance_type_config.instance_type)
         weighted_capacity                          = lookup(instance_type_configs.value, "weighted_capacity", local.default_instance_type_config.weighted_capacity)
@@ -138,7 +138,7 @@ resource "aws_emr_cluster" "cp" {
     dynamic "instance_type_configs" {
       for_each = { for k, v in lookup(var.core_node_groups, "instance_type_configs", local.default_instance_type_configs) : k => v }
       content {
-        bid_price= lookup(instance_type_configs.value, "bid_price", local.default_instance_type_config.bid_price)
+        bid_price                                  = lookup(instance_type_configs.value, "bid_price", local.default_instance_type_config.bid_price)
         bid_price_as_percentage_of_on_demand_price = lookup(instance_type_configs.value, "bid_price_as_percentage_of_on_demand_price", local.default_instance_type_config.bid_price_as_percentage_of_on_demand_price)
         instance_type                              = lookup(instance_type_configs.value, "instance_type", local.default_instance_type_config.instance_type)
         weighted_capacity                          = lookup(instance_type_configs.value, "weighted_capacity", local.default_instance_type_config.weighted_capacity)
@@ -170,6 +170,42 @@ resource "aws_emr_cluster" "cp" {
   lifecycle {
     create_before_destroy = true
   }
+}
+
+resource "aws_emr_instance_fleet" "dp" {
+  cluster_id = aws_emr_cluster.cp.id
+  name       = join("-", [local.name, "task-fleet"])
+
+  dynamic "instance_type_configs" {
+    for_each = { for k, v in lookup(var.task_node_groups, "instance_type_configs", local.default_instance_type_configs) : k => v }
+    content {
+      bid_price                                  = lookup(instance_type_configs.value, "bid_price", local.default_instance_type_config.bid_price)
+      bid_price_as_percentage_of_on_demand_price = lookup(instance_type_configs.value, "bid_price_as_percentage_of_on_demand_price", local.default_instance_type_config.bid_price_as_percentage_of_on_demand_price)
+      instance_type                              = lookup(instance_type_configs.value, "instance_type", local.default_instance_type_config.instance_type)
+      weighted_capacity                          = lookup(instance_type_configs.value, "weighted_capacity", local.default_instance_type_config.weighted_capacity)
+
+      dynamic "ebs_config" {
+        for_each = { for k, v in instance_type_configs.value : k => v if k == "ebs_config" }
+        content {
+          size                 = lookup(ebs_config.value, "size", local.default_instance_type_config.ebs_config.size)
+          type                 = lookup(ebs_config.value, "type", local.default_instance_type_config.ebs_config.type)
+          volumes_per_instance = lookup(ebs_config.value, "volumes_per_instance", local.default_instance_type_config.ebs_config.volumes_per_instance)
+        }
+      }
+    }
+  }
+
+  launch_specifications {
+    spot_specification {
+      allocation_strategy      = "capacity-optimized"
+      block_duration_minutes   = 0
+      timeout_action           = "TERMINATE_CLUSTER"
+      timeout_duration_minutes = 10
+    }
+  }
+
+  target_on_demand_capacity = lookup(var.task_node_groups, "target_on_demand_capacity", local.default_task_node_groups.target_on_demand_capacity)
+  target_spot_capacity      = lookup(var.task_node_groups, "target_spot_capacity", local.default_task_node_groups.target_spot_capacity)
 }
 
 ### security/network

@@ -48,6 +48,11 @@ variable "core_node_groups" {
   default     = {}
 }
 
+variable "task_node_groups" {
+  description = "EMR task node groups configuration"
+  default     = {}
+}
+
 variable "instance_groups" {
   description = "list of instance groups"
   default = [
