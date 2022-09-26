@@ -12,6 +12,13 @@ locals {
     target_on_demand_capacity      = 1
     target_spot_capacity           = 1
   }
+  default_task_node_groups = {
+    instance_type                  = "m5.xlarge"
+    provisioned_on_demand_capacity = 1
+    provisioned_spot_capacity      = 1
+    target_on_demand_capacity      = 1
+    target_spot_capacity           = 1
+  }
   default_instance_type_config = {
     bid_price                                  = null
     bid_price_as_percentage_of_on_demand_price = 100
