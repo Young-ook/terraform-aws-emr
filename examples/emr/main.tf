@@ -20,8 +20,10 @@ module "vpc" {
 
 # vpc
 module "emr" {
-  source           = "../../"
-  name             = var.name
-  subnets          = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
-  task_node_groups = var.task_node_groups
+  source             = "../../"
+  name               = var.name
+  subnets            = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
+  master_node_groups = var.master_node_groups
+  core_node_groups   = var.core_node_groups
+  task_node_groups   = var.task_node_groups
 }
