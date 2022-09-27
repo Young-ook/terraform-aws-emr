@@ -57,9 +57,9 @@ data "template_file" "scale-policy" {
 resource "aws_emr_cluster" "cp" {
   name                              = local.name
   tags                              = merge(local.default-tags, var.tags)
-  release_label                     = var.release
-  applications                      = concat(var.applications)
-  termination_protection            = false
+  release_label                     = lookup(var.cluster, "release", local.default_cluster.release)
+  applications                      = concat(lookup(var.cluster, "applications", local.default_cluster.applications))
+  termination_protection            = lookup(var.cluster, "termination_protections", local.default_cluster.termination_protection)
   keep_job_flow_alive_when_no_steps = true
   service_role                      = aws_iam_role.cp.arn
   #bootstrap_action                 = var.bootstrap_action

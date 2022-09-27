@@ -22,9 +22,6 @@ module "vpc" {
 module "emr" {
   source           = "../../"
   name             = var.name
-  region           = var.aws_region
-  vpc              = module.vpc.vpc.id
   subnets          = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
-  azs              = var.azs
   task_node_groups = var.task_node_groups
 }
