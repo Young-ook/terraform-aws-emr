@@ -35,32 +35,6 @@ variable "task_node_groups" {
   default     = {}
 }
 
-variable "release" {
-  description = "EMR release version"
-  default     = "emr-5.36.0"
-}
-
-variable "applications" {
-  description = "List of EMR applications"
-  type        = list(string)
-  default     = ["Spark", "Hadoop", "Hive"]
-}
-
-variable "ssh_key" {
-  description = "The key name to SSH into instances with"
-  default     = "your-master-key"
-}
-
-variable "bootstrap_action" {
-  description = "definition of bootstrap action"
-  default = [
-    {
-      path = "s3://emr-bootstrap/actions/run-if"
-      name = "runif"
-      args = ["instance.isMaster=true", "echo running on master node"]
-    },
-  ]
-}
 variable "custom_scale_policy" {
   description = "Path to custom rendered scaling policy"
   default     = ""
