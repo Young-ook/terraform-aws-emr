@@ -1,24 +1,6 @@
 ### default values
 
 locals {
-  default_master_node_groups = {
-    instance_type             = "m5.xlarge"
-    target_on_demand_capacity = 1
-  }
-  default_core_node_groups = {
-    instance_type                  = "m5.xlarge"
-    provisioned_on_demand_capacity = 1
-    provisioned_spot_capacity      = 1
-    target_on_demand_capacity      = 1
-    target_spot_capacity           = 1
-  }
-  default_task_node_groups = {
-    instance_type                  = "m5.xlarge"
-    provisioned_on_demand_capacity = 1
-    provisioned_spot_capacity      = 1
-    target_on_demand_capacity      = 1
-    target_spot_capacity           = 1
-  }
   default_instance_type_config = {
     bid_price                                  = null
     bid_price_as_percentage_of_on_demand_price = 100
@@ -33,6 +15,49 @@ locals {
   default_instance_type_configs = [
     local.default_instance_type_config
   ]
+  default_on_demand_specification = {
+    # specifies the strategy to use in launching On-Demand instance fleets
+    # currently, the only option is lowest-price (the default)
+    allocation_strategy = "lowest-price"
+  }
+  default_spot_specification = {
+    # specifies the strategy to use in launching Spot instance fleets
+    # currently, the only option is capacity-optimized (the default)
+    allocation_strategy      = "capacity-optimized"
+    block_duration_minutes   = 0
+    timeout_action           = "SWITCH_TO_ON_DEMAND" # valid values: TERMINATE_CLUSTER | SWITCH_TO_ON_DEMAND
+    timeout_duration_minutes = 10
+  }
+  default_master_node_groups = {
+    instance_type             = "m5.xlarge"
+    target_on_demand_capacity = 1
+    launch_specifications = {
+      on_demand_specification = local.default_on_demand_specification
+      spot_specification      = null
+    }
+  }
+  default_core_node_groups = {
+    instance_type                  = "m5.xlarge"
+    provisioned_on_demand_capacity = 1
+    provisioned_spot_capacity      = 1
+    target_on_demand_capacity      = 1
+    target_spot_capacity           = 1
+    launch_specifications = {
+      on_demand_specification = null
+      spot_specification      = local.default_spot_specification
+    }
+  }
+  default_task_node_groups = {
+    instance_type                  = "m5.xlarge"
+    provisioned_on_demand_capacity = 1
+    provisioned_spot_capacity      = 1
+    target_on_demand_capacity      = 1
+    target_spot_capacity           = 1
+    launch_specifications = {
+      on_demand_specification = local.default_on_demand_specification
+      spot_specification      = local.default_spot_specification
+    }
+  }
   default_cluster = {
     release                = "emr-5.36.0"
     applications           = ["Spark", "Hadoop", "Hive"]
