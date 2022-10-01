@@ -59,16 +59,10 @@ locals {
     }
   }
   default_cluster = {
-    release                = "emr-5.36.0"
     applications           = ["Spark", "Hadoop", "Hive"]
-    termination_protection = false
+    bootstrap              = []
+    release                = "emr-5.36.0"
     ssh_key                = null
-    bootstrap = [
-      {
-        path = "s3://emr-bootstrap/actions/run-if"
-        name = "runif"
-        args = ["instance.isMaster=true", "echo running on master node"]
-      },
-    ]
+    termination_protection = false
   }
 }

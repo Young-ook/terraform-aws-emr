@@ -57,12 +57,11 @@ data "template_file" "scale-policy" {
 resource "aws_emr_cluster" "cp" {
   name                              = local.name
   tags                              = merge(local.default-tags, var.tags)
+  service_role                      = aws_iam_role.cp.arn
   release_label                     = lookup(var.cluster, "release", local.default_cluster.release)
   applications                      = concat(lookup(var.cluster, "applications", local.default_cluster.applications))
   termination_protection            = lookup(var.cluster, "termination_protections", local.default_cluster.termination_protection)
   keep_job_flow_alive_when_no_steps = true
-  service_role                      = aws_iam_role.cp.arn
-  #bootstrap_action                 = var.bootstrap_action
 
   ec2_attributes {
     subnet_ids                        = var.subnets
@@ -71,8 +70,18 @@ resource "aws_emr_cluster" "cp" {
     instance_profile                  = aws_iam_instance_profile.ng.arn
   }
 
+  dynamic "bootstrap_action" {
+    for_each = { for k, v in lookup(var.cluster, "bootstrap", local.default_cluster.bootstrap) : k => v if length(lookup(var.cluster, "bootstrap", local.default_cluster.bootstrap)) > 0 }
+    content {
+      path = "s3://emr-bootstrap/actions/run-if"
+      name = "runif"
+      args = ["instance.isMaster=true", "echo running on master node"]
+    }
+  }
+
   master_instance_fleet {
-    name = join("-", [local.name, "master-fleet"])
+    name                      = join("-", [local.name, "master-fleet"])
+    target_on_demand_capacity = lookup(var.master_node_groups, "target_on_demand_capacity", local.default_master_node_groups.target_on_demand_capacity)
 
     dynamic "instance_type_configs" {
       for_each = { for k, v in lookup(var.master_node_groups, "instance_type_configs", local.default_instance_type_configs) : k => v }
@@ -113,12 +122,12 @@ resource "aws_emr_cluster" "cp" {
         }
       }
     }
-
-    target_on_demand_capacity = lookup(var.master_node_groups, "target_on_demand_capacity", local.default_master_node_groups.target_on_demand_capacity)
   }
 
   core_instance_fleet {
-    name = join("-", [local.name, "core-fleet"])
+    name                      = join("-", [local.name, "core-fleet"])
+    target_on_demand_capacity = lookup(var.core_node_groups, "target_on_demand_capacity", local.default_core_node_groups.target_on_demand_capacity)
+    target_spot_capacity      = lookup(var.core_node_groups, "target_spot_capacity", local.default_core_node_groups.target_spot_capacity)
 
     dynamic "instance_type_configs" {
       for_each = { for k, v in lookup(var.core_node_groups, "instance_type_configs", local.default_instance_type_configs) : k => v }
@@ -159,9 +168,6 @@ resource "aws_emr_cluster" "cp" {
         }
       }
     }
-
-    target_on_demand_capacity = lookup(var.core_node_groups, "target_on_demand_capacity", local.default_core_node_groups.target_on_demand_capacity)
-    target_spot_capacity      = lookup(var.core_node_groups, "target_spot_capacity", local.default_core_node_groups.target_spot_capacity)
   }
 
   lifecycle {
