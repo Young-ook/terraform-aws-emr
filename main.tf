@@ -92,9 +92,25 @@ resource "aws_emr_cluster" "cp" {
         }
       }
     }
-    launch_specifications {
-      on_demand_specification {
-        allocation_strategy = "lowest-price"
+
+    dynamic "launch_specifications" {
+      for_each = [lookup(var.master_node_groups, "launch_specifications", local.default_master_node_groups.launch_specifications)]
+      content {
+        dynamic "on_demand_specification" {
+          for_each = lookup(launch_specifications.value, "on_demand_specification", null) == null ? [] : [lookup(launch_specifications.value, "on_demand_specification")]
+          content {
+            allocation_strategy = lookup(on_demand_specification.value, "allocation_strategy", local.default_on_demand_specification.allocation_strategy)
+          }
+        }
+        dynamic "spot_specification" {
+          for_each = lookup(launch_specifications.value, "spot_specification", null) == null ? [] : [lookup(launch_specifications.value, "spot_specification")]
+          content {
+            allocation_strategy      = lookup(spot_specification.value, "allocation_strategy", local.default_spot_specification.allocation_strategy)
+            block_duration_minutes   = lookup(spot_specification.value, "block_duration_minutes", local.default_spot_specification.block_duration_minutes)
+            timeout_action           = lookup(spot_specification.value, "timeout_action", local.default_spot_specification.timeout_action)
+            timeout_duration_minutes = lookup(spot_specification.value, "timeout_duration_minutes", local.default_spot_specification.timeout_duration_minutes)
+          }
+        }
       }
     }
 
@@ -123,12 +139,24 @@ resource "aws_emr_cluster" "cp" {
       }
     }
 
-    launch_specifications {
-      spot_specification {
-        allocation_strategy      = "capacity-optimized"
-        block_duration_minutes   = 0
-        timeout_action           = "SWITCH_TO_ON_DEMAND"
-        timeout_duration_minutes = 10
+    dynamic "launch_specifications" {
+      for_each = [lookup(var.core_node_groups, "launch_specifications", local.default_core_node_groups.launch_specifications)]
+      content {
+        dynamic "on_demand_specification" {
+          for_each = lookup(launch_specifications.value, "on_demand_specification", null) == null ? [] : [lookup(launch_specifications.value, "on_demand_specification")]
+          content {
+            allocation_strategy = lookup(on_demand_specification.value, "allocation_strategy", local.default_on_demand_specification.allocation_strategy)
+          }
+        }
+        dynamic "spot_specification" {
+          for_each = lookup(launch_specifications.value, "spot_specification", null) == null ? [] : [lookup(launch_specifications.value, "spot_specification")]
+          content {
+            allocation_strategy      = lookup(spot_specification.value, "allocation_strategy", local.default_spot_specification.allocation_strategy)
+            block_duration_minutes   = lookup(spot_specification.value, "block_duration_minutes", local.default_spot_specification.block_duration_minutes)
+            timeout_action           = lookup(spot_specification.value, "timeout_action", local.default_spot_specification.timeout_action)
+            timeout_duration_minutes = lookup(spot_specification.value, "timeout_duration_minutes", local.default_spot_specification.timeout_duration_minutes)
+          }
+        }
       }
     }
 
@@ -141,7 +169,7 @@ resource "aws_emr_cluster" "cp" {
   }
 }
 
-### cluster/work
+### cluster/task
 resource "aws_emr_instance_fleet" "dp" {
   cluster_id = aws_emr_cluster.cp.id
   name       = join("-", [local.name, "task-fleet"])
@@ -165,12 +193,24 @@ resource "aws_emr_instance_fleet" "dp" {
     }
   }
 
-  launch_specifications {
-    spot_specification {
-      allocation_strategy      = "capacity-optimized"
-      block_duration_minutes   = 0
-      timeout_action           = "TERMINATE_CLUSTER"
-      timeout_duration_minutes = 10
+  dynamic "launch_specifications" {
+    for_each = [lookup(var.task_node_groups, "launch_specifications", local.default_task_node_groups.launch_specifications)]
+    content {
+      dynamic "on_demand_specification" {
+        for_each = lookup(launch_specifications.value, "on_demand_specification", null) == null ? [] : [lookup(launch_specifications.value, "on_demand_specification")]
+        content {
+          allocation_strategy = lookup(on_demand_specification.value, "allocation_strategy", local.default_on_demand_specification.allocation_strategy)
+        }
+      }
+      dynamic "spot_specification" {
+        for_each = lookup(launch_specifications.value, "spot_specification", null) == null ? [] : [lookup(launch_specifications.value, "spot_specification")]
+        content {
+          allocation_strategy      = lookup(spot_specification.value, "allocation_strategy", local.default_spot_specification.allocation_strategy)
+          block_duration_minutes   = lookup(spot_specification.value, "block_duration_minutes", local.default_spot_specification.block_duration_minutes)
+          timeout_action           = lookup(spot_specification.value, "timeout_action", local.default_spot_specification.timeout_action)
+          timeout_duration_minutes = lookup(spot_specification.value, "timeout_duration_minutes", local.default_spot_specification.timeout_duration_minutes)
+        }
+      }
     }
   }
 
