@@ -40,21 +40,6 @@ variable "custom_scale_policy" {
   default     = ""
 }
 
-### alert
-variable "scale_out_alarms" {
-  description = "metric alarm list for autoscaling trigger"
-  default = {
-    "0" = ["CPUUtilization", "GreaterThanOrEqualToThreshold", "2", "120", "80"]
-  }
-}
-
-variable "scale_in_alarms" {
-  description = "metric alarm list for autoscaling trigger"
-  default = {
-    "0" = ["CPUUtilization", "LessThanThreshold", "2", "120", "20"]
-  }
-}
-
 ### description
 variable "name" {
   description = "The logical name of the module instance"
