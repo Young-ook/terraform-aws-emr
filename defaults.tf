@@ -63,6 +63,18 @@ locals {
     bootstrap              = []
     release                = "emr-5.36.0"
     ssh_key                = null
+    scaling                = null
     termination_protection = false
+  }
+  default_scaling_policy = {
+    compute_limits = {
+      # The unit type used for specifying a managed scaling policy
+      # valid values: InstanceFleetUnits, Instances, VCPU
+      unit_type                       = "InstanceFleetUnits"
+      minimum_capacity_units          = 2
+      maximum_capacity_units          = 10
+      maximum_ondemand_capacity_units = 2
+      maximum_core_capacity_units     = 10
+    }
   }
 }
