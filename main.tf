@@ -68,6 +68,7 @@ resource "aws_emr_cluster" "cp" {
     additional_master_security_groups = var.additional_master_security_group
     additional_slave_security_groups  = var.additional_slave_security_group
     instance_profile                  = aws_iam_instance_profile.ng.arn
+    key_name                          = lookup(var.cluster, "ssh_key", local.default_cluster.ssh_key)
   }
 
   dynamic "bootstrap_action" {
@@ -177,8 +178,10 @@ resource "aws_emr_cluster" "cp" {
 
 ### cluster/task
 resource "aws_emr_instance_fleet" "dp" {
-  cluster_id = aws_emr_cluster.cp.id
-  name       = join("-", [local.name, "task-fleet"])
+  cluster_id                = aws_emr_cluster.cp.id
+  name                      = join("-", [local.name, "task-fleet"])
+  target_on_demand_capacity = lookup(var.task_node_groups, "target_on_demand_capacity", local.default_task_node_groups.target_on_demand_capacity)
+  target_spot_capacity      = lookup(var.task_node_groups, "target_spot_capacity", local.default_task_node_groups.target_spot_capacity)
 
   dynamic "instance_type_configs" {
     for_each = { for k, v in lookup(var.task_node_groups, "instance_type_configs", local.default_instance_type_configs) : k => v }
@@ -219,7 +222,4 @@ resource "aws_emr_instance_fleet" "dp" {
       }
     }
   }
-
-  target_on_demand_capacity = lookup(var.task_node_groups, "target_on_demand_capacity", local.default_task_node_groups.target_on_demand_capacity)
-  target_spot_capacity      = lookup(var.task_node_groups, "target_spot_capacity", local.default_task_node_groups.target_spot_capacity)
 }
