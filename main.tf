@@ -51,7 +51,7 @@ resource "aws_iam_instance_profile" "ng" {
 
 ### cluster/control
 data "template_file" "scale-policy" {
-  template = file("${path.module}/scale-policy.tpl")
+  template = file("${path.module}/templates/scale-policy.tpl")
 }
 
 resource "aws_emr_cluster" "cp" {
