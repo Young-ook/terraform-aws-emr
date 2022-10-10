@@ -20,6 +20,7 @@ module "vpc" {
 
 # vpc
 module "emr" {
+  depends_on         = [module.vpc]
   source             = "../../"
   name               = var.name
   subnets            = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
