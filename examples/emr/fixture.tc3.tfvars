@@ -23,3 +23,7 @@ task_node_groups = {
   target_on_demand_capacity = 1
   target_spot_capacity      = 1
 }
+tags = {
+  case-number = "tc3"
+  case        = "bootstrap, ssh, multiple-node-groups"
+}
