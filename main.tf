@@ -3,6 +3,10 @@ module "aws" {
   source = "Young-ook/spinnaker/aws//modules/aws-partitions"
 }
 
+locals {
+  scaling = lookup(var.cluster, "scaling", local.default_cluster.scaling)
+}
+
 ### security/policy
 resource "aws_iam_role" "cp" {
   name = join("-", [local.name, "cp"])
@@ -51,7 +55,7 @@ resource "aws_iam_instance_profile" "ng" {
 
 ### cluster/control
 data "template_file" "scale-policy" {
-  template = file("${path.module}/scale-policy.tpl")
+  template = file("${path.module}/templates/scale-policy.tpl")
 }
 
 resource "aws_emr_cluster" "cp" {
@@ -220,6 +224,22 @@ resource "aws_emr_instance_fleet" "dp" {
           timeout_duration_minutes = lookup(spot_specification.value, "timeout_duration_minutes", local.default_spot_specification.timeout_duration_minutes)
         }
       }
+    }
+  }
+}
+
+### cluster/scaling
+resource "aws_emr_managed_scaling_policy" "as" {
+  for_each   = local.scaling == null ? {} : { emr_managed = local.scaling }
+  cluster_id = aws_emr_cluster.cp.id
+  dynamic "compute_limits" {
+    for_each = { for k, v in each.value : k => v if k == "compute_limits" }
+    content {
+      unit_type                       = lookup(compute_limits.value, "unit_type", local.default_scaling_policy.compute_limits.unit_type)
+      minimum_capacity_units          = lookup(compute_limits.value, "minimum_capacity_units", local.default_scaling_policy.compute_limits.minimum_capacity_units)
+      maximum_capacity_units          = lookup(compute_limits.value, "maximum_capacity_units", local.default_scaling_policy.compute_limits.maximum_capacity_units)
+      maximum_ondemand_capacity_units = lookup(compute_limits.value, "maximum_ondemand_capacity_units", local.default_scaling_policy.compute_limits.maximum_ondemand_capacity_units)
+      maximum_core_capacity_units     = lookup(compute_limits.value, "maximum_core_capacity_units", local.default_scaling_policy.compute_limits.maximum_core_capacity_units)
     }
   }
 }
