@@ -1,11 +1,11 @@
 cluster = {
-  bootstrap = [
-    {
-      path = "s3://emr-bootstrap/actions/run-if"
-      name = "runif"
-      args = ["instance.isMaster=true", "echo running on master node"]
-    },
-  ]
+  #  bootstrap = [
+  #    {
+  #      path = "s3://emr-bootstrap/actions/run-if"
+  #      name = "runif"
+  #      args = ["instance.isMaster=true", "echo running on master node"]
+  #    },
+  #  ]
   scaling = {
     compute_limits = {
       # The unit type used for specifying a managed scaling policy
