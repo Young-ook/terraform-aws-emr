@@ -1,6 +1,22 @@
-aws_region      = "ap-northeast-2"
-azs             = ["ap-northeast-2a", "ap-northeast-2c", "ap-northeast-2d"]
-use_default_vpc = true
+cluster = {
+  bootstrap = [
+    {
+      path = "s3://emr-bootstrap/actions/run-if"
+      name = "runif"
+      args = ["instance.isMaster=true", "echo running on master node"]
+    },
+  ]
+  scaling = {
+    compute_limits = {
+      # The unit type used for specifying a managed scaling policy
+      # valid values: InstanceFleetUnits, Instances, VCPU
+      unit_type              = "InstanceFleetUnits"
+      minimum_capacity_units = 2
+      maximum_capacity_units = 10
+    }
+  }
+}
+master_node_groups = {}
 core_node_groups = {
   instance_type_configs = [
     {

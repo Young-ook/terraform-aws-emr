@@ -1,10 +1,10 @@
-# EMR
+### EMR Blueprint
 
 provider "aws" {
   region = var.aws_region
 }
 
-# vpc
+### vpc
 module "vpc" {
   source  = "Young-ook/vpc/aws"
   version = "1.0.2"
@@ -18,7 +18,7 @@ module "vpc" {
   }
 }
 
-# vpc
+### emr
 module "emr" {
   depends_on         = [module.vpc]
   source             = "../../"
