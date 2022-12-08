@@ -4,21 +4,27 @@
 variable "aws_region" {
   description = "The aws region to deploy"
   type        = string
-  default     = "us-east-1"
+  default     = "ap-northeast-2"
 }
 
 variable "use_default_vpc" {
   description = "A feature flag for whether to use default vpc"
   type        = bool
+  default     = true
 }
 
 variable "azs" {
   description = "A list of availability zones for the vpc to deploy resources"
   type        = list(string)
-  default     = ["us-east-1a", "us-east-1c", "us-east-1d"]
+  default     = ["ap-northeast-2a", "ap-northeast-2c", "ap-northeast-2d"]
 }
 
 ### cluster
+variable "cluster" {
+  description = "EMR cluster control plane configuration"
+  default     = {}
+}
+
 variable "master_node_groups" {
   description = "EMR master node groups configuration"
   default     = {}
