@@ -3,4 +3,4 @@
 
 ## Examples
 - [EMR Blueprint](https://github.com/Young-ook/terraform-aws-emr/tree/main/examples/blueprint)
-- [EMR on EKS](https://github.com/Young-ook/terraform-aws-eks/tree/main/examples/emr)
+- [EMR on EKS](https://github.com/Young-ook/terraform-aws-emr/tree/main/examples/emr-on-eks)
