@@ -1,10 +1,10 @@
-# EMR
+### EMR Blueprint
 
 provider "aws" {
   region = var.aws_region
 }
 
-# vpc
+### vpc
 module "vpc" {
   source  = "Young-ook/vpc/aws"
   version = "1.0.2"
@@ -18,11 +18,13 @@ module "vpc" {
   }
 }
 
-# vpc
+### emr
 module "emr" {
+  depends_on         = [module.vpc]
   source             = "../../"
   name               = var.name
   subnets            = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
+  cluster            = var.cluster
   master_node_groups = var.master_node_groups
   core_node_groups   = var.core_node_groups
   task_node_groups   = var.task_node_groups
