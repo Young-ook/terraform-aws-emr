@@ -8,10 +8,15 @@ provider "aws" {
   region = var.aws_region
 }
 
+module "aws" {
+  source  = "Young-ook/spinnaker/aws//modules/aws-partitions"
+  version = "2.3.5"
+}
+
 ### vpc
 module "vpc" {
   source  = "Young-ook/vpc/aws"
-  version = "1.0.2"
+  version = "1.0.3"
   name    = var.name
   tags    = var.tags
   vpc_config = var.use_default_vpc ? null : {
@@ -20,6 +25,13 @@ module "vpc" {
     subnet_type = "private"
     single_ngw  = true
   }
+  vpce_config = [
+    {
+      service             = "s3"
+      type                = "Interface"
+      private_dns_enabled = false
+    },
+  ]
 }
 
 ### emr
