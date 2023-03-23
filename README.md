@@ -1,3 +1,5 @@
+[[English](README.md)] [[한국어](README.ko.md)]
+
 # Amazon EMR (Elastic MapReduce)
 [Amazon EMR](https://aws.amazon.com/emr/) is the industry-leading cloud big data solution for petabyte-scale data processing, interactive analytics, and machine learning using open-source frameworks such as Apache Spark, Apache Hive, and Presto.
 
