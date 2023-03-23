@@ -37,7 +37,8 @@ module "vpc" {
 ### emr
 module "emr" {
   depends_on         = [module.vpc]
-  source             = "../../"
+  source             = "Young-ook/emr/aws"
+  version            = "0.0.1"
   name               = var.name
   subnets            = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
   cluster            = var.cluster
