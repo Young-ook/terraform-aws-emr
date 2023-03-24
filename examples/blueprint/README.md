@@ -36,6 +36,11 @@ In this example, you can launch your EMR cluster with AWS Graviton based node gr
 terraform apply -var-file fixture.graviton.tfvars
 ```
 
+## Storage
+Amazon S3 (Simple Storage Service) is an object storage service that offers industry-leading scalability, data availability, security, and performance. In this blueprint, you use an s3 bucket for machine learning datas. And you can utilize s3 lifecycle configuration to enable intelligent-tiering that switches storage classes automatically based on object access pattern. This is important because it is easist way to reduce the storage cost of large volume datas for mahcine learning workloads.
+
+![aws-s3-lc-int-tiering](../../images/aws-s3-lc-int-tiering.png)
+
 ## Clean up
 To destroy all infrastrcuture, run terraform:
 ```
