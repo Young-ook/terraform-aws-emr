@@ -9,10 +9,18 @@ output "cluster" {
   }
 }
 
+output "studio" {
+  description = "The EMR studio attributes"
+  value       = aws_emr_studio.studio
+}
+
 output "role" {
   description = "The generated role of the EMR node group"
   value = {
-    name = aws_iam_role.ng.name
-    arn  = aws_iam_role.ng.arn
+    cluster = {
+      control_plane = aws_iam_role.cp
+      data_plane    = aws_iam_role.ng
+    }
+    studio = aws_iam_role.studio
   }
 }
