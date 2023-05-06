@@ -22,7 +22,7 @@ variable "azs" {
 ### cluster
 variable "cluster" {
   description = "EMR cluster control plane configuration"
-  default     = {}
+  default     = null
 }
 
 variable "master_node_groups" {
