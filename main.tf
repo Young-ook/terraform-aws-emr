@@ -32,7 +32,7 @@ resource "aws_iam_role" "cp" {
 resource "aws_iam_role_policy_attachment" "emr" {
   for_each   = toset(local.cluster_enabled ? ["enabled"] : [])
   role       = aws_iam_role.cp["enabled"].name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceRole"
+  policy_arn = format("arn:%s:iam::aws:policy/service-role/AmazonElasticMapReduceRole", module.aws.partition.partition)
 }
 
 resource "aws_iam_role" "ng" {
@@ -54,7 +54,7 @@ resource "aws_iam_role" "ng" {
 resource "aws_iam_role_policy_attachment" "ec2" {
   for_each   = toset(local.cluster_enabled ? ["enabled"] : [])
   role       = aws_iam_role.ng["enabled"].name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role"
+  policy_arn = format("arn:%s:iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role", module.aws.partition.partition)
 }
 
 resource "aws_iam_instance_profile" "ng" {
