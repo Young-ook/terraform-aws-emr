@@ -64,7 +64,7 @@ module "emr" {
 ### s3
 module "s3" {
   source        = "Young-ook/sagemaker/aws//modules/s3"
-  version       = "0.3.3"
+  version       = "0.3.4"
   name          = var.name
   tags          = var.tags
   force_destroy = var.force_destroy
