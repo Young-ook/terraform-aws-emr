@@ -41,6 +41,20 @@ Amazon S3 (Simple Storage Service) is an object storage service that offers indu
 
 ![aws-s3-lc-int-tiering](../../images/aws-s3-lc-int-tiering.png)
 
+## EMR Studio
+Upon login, it will redirect you to the EMR Studio console. You will notice that the *emr-studio-xxxxx/emr-studio* studio which you created in the previous step is ready. Your EMR Studio is now ready. Let's proceed to the next step to create a studio workspace.
+
+![aws-emr-studio-workspaces](../../images/aws-emr-studio-workspaces.png)
+
+When you are logged in to an Amazon EMR Studio, you can create and configure different Workspaces to organize and run notebooks. Workspaces are the primary building blocks of Amazon EMR Studio.
+
+* Launch the Create a Workspace dialog box by clicking on any of the Create Workspace buttons.
+* Provide all the required information as shown below. You can create the workspace while creating an EMR cluster or assigning it to an existing EMR cluster. For this step, let's keep the default (no checked option).
+
+![aws-emr-studio-new-workspace](../../images/aws-emr-studio-new-workspace.png)
+
+![aws-emr-studio-dashboard](../../images/aws-emr-studio-dashboard.png)
+
 ## Clean up
 To destroy all infrastrcuture, run terraform:
 ```
