@@ -1,21 +1,4 @@
-cluster = {
-  #  bootstrap = [
-  #    {
-  #      path = "s3://emr-bootstrap/actions/run-if"
-  #      name = "runif"
-  #      args = ["instance.isMaster=true", "echo running on master node"]
-  #    },
-  #  ]
-  scaling = {
-    compute_limits = {
-      # The unit type used for specifying a managed scaling policy
-      # valid values: InstanceFleetUnits, Instances, VCPU
-      unit_type              = "InstanceFleetUnits"
-      minimum_capacity_units = 2
-      maximum_capacity_units = 10
-    }
-  }
-}
+tags               = { example = "emr_blueprint" }
 master_node_groups = {}
 core_node_groups = {
   instance_type_configs = [
@@ -26,8 +9,7 @@ core_node_groups = {
   ]
 }
 task_node_groups = {
-  target_on_demand_capacity = 1
-  target_spot_capacity      = 2
+  target_spot_capacity = 2
   launch_specifications = {
     spot_specification = {
       allocation_strategy      = "capacity-optimized"
