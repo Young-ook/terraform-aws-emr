@@ -12,15 +12,15 @@ module "vpc" {
 }
 
 module "main" {
-  source             = "../.."
-  subnets            = values(module.vpc.subnets["public"])
+  source  = "../.."
+  subnets = values(module.vpc.subnets["public"])
 }
 
-resource "test_assertions" "pet_name" {
-  component = "pet_name"
+resource "test_assertions" "null" {
+  component = "null"
 
-  check "pet_name" {
-    description = "default random pet name"
-    condition   = can(regex("^emr", module.main.cluster.control_plane.name))
+  check "null_cluster" {
+    description = "check if the default emr cluster is null"
+    condition   = ! can(module.main.cluster.enabled)
   }
 }

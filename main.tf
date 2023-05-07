@@ -4,14 +4,19 @@ module "aws" {
 }
 
 locals {
-  scaling        = lookup(var.cluster, "scaling", local.default_cluster.scaling)
-  studio_enabled = var.studio != null
+  scaling         = local.cluster_enabled ? lookup(var.cluster, "scaling", local.default_cluster.scaling) : local.default_cluster.scaling
+  master_fleet    = local.cluster_enabled ? lookup(var.cluster, "master_fleet", local.default_cluster.master_fleet) : local.default_cluster.master_fleet
+  core_fleet      = local.cluster_enabled ? lookup(var.cluster, "core_fleet", local.default_cluster.core_fleet) : local.default_cluster.core_fleet
+  task_fleet      = local.cluster_enabled ? lookup(var.cluster, "task_fleet", local.default_cluster.task_fleet) : local.default_cluster.task_fleet
+  cluster_enabled = var.cluster != null
+  studio_enabled  = var.studio != null
 }
 
 ### security/policy
 resource "aws_iam_role" "cp" {
-  name = join("-", [local.name, "cp"])
-  tags = merge(local.default-tags, var.tags)
+  for_each = toset(local.cluster_enabled ? ["enabled"] : [])
+  name     = join("-", [local.name, "cp"])
+  tags     = merge(local.default-tags, var.tags)
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -25,13 +30,15 @@ resource "aws_iam_role" "cp" {
 }
 
 resource "aws_iam_role_policy_attachment" "emr" {
-  role       = aws_iam_role.cp.name
+  for_each   = toset(local.cluster_enabled ? ["enabled"] : [])
+  role       = aws_iam_role.cp["enabled"].name
   policy_arn = format("arn:%s:iam::aws:policy/service-role/AmazonElasticMapReduceRole", module.aws.partition.partition)
 }
 
 resource "aws_iam_role" "ng" {
-  name = join("-", [local.name, "ng"])
-  tags = merge(local.default-tags, var.tags)
+  for_each = toset(local.cluster_enabled ? ["enabled"] : [])
+  name     = join("-", [local.name, "ng"])
+  tags     = merge(local.default-tags, var.tags)
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -45,13 +52,15 @@ resource "aws_iam_role" "ng" {
 }
 
 resource "aws_iam_role_policy_attachment" "ec2" {
-  role       = aws_iam_role.ng.name
+  for_each   = toset(local.cluster_enabled ? ["enabled"] : [])
+  role       = aws_iam_role.ng["enabled"].name
   policy_arn = format("arn:%s:iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role", module.aws.partition.partition)
 }
 
 resource "aws_iam_instance_profile" "ng" {
-  name = join("-", [local.name, "ng"])
-  role = aws_iam_role.ng.name
+  for_each = toset(local.cluster_enabled ? ["enabled"] : [])
+  name     = join("-", [local.name, "ng"])
+  role     = aws_iam_role.ng["enabled"].name
 }
 
 ### cluster/control
@@ -60,9 +69,10 @@ data "template_file" "scale-policy" {
 }
 
 resource "aws_emr_cluster" "cp" {
+  for_each                          = toset(local.cluster_enabled ? ["enabled"] : [])
   name                              = local.name
   tags                              = merge(local.default-tags, var.tags)
-  service_role                      = aws_iam_role.cp.arn
+  service_role                      = aws_iam_role.cp["enabled"].arn
   release_label                     = lookup(var.cluster, "release", local.default_cluster.release)
   applications                      = concat(lookup(var.cluster, "applications", local.default_cluster.applications))
   termination_protection            = lookup(var.cluster, "termination_protections", local.default_cluster.termination_protection)
@@ -72,7 +82,7 @@ resource "aws_emr_cluster" "cp" {
     subnet_ids                        = var.subnets
     additional_master_security_groups = var.additional_master_security_group
     additional_slave_security_groups  = var.additional_slave_security_group
-    instance_profile                  = aws_iam_instance_profile.ng.arn
+    instance_profile                  = aws_iam_instance_profile.ng["enabled"].arn
     key_name                          = lookup(var.cluster, "ssh_key", local.default_cluster.ssh_key)
   }
 
@@ -183,7 +193,8 @@ resource "aws_emr_cluster" "cp" {
 
 ### cluster/task
 resource "aws_emr_instance_fleet" "dp" {
-  cluster_id                = aws_emr_cluster.cp.id
+  for_each                  = toset(local.cluster_enabled ? ["enabled"] : [])
+  cluster_id                = aws_emr_cluster.cp["enabled"].id
   name                      = join("-", [local.name, "task-fleet"])
   target_on_demand_capacity = lookup(var.task_node_groups, "target_on_demand_capacity", local.default_task_node_groups.target_on_demand_capacity)
   target_spot_capacity      = lookup(var.task_node_groups, "target_spot_capacity", local.default_task_node_groups.target_spot_capacity)
@@ -232,7 +243,7 @@ resource "aws_emr_instance_fleet" "dp" {
 ### cluster/scaling
 resource "aws_emr_managed_scaling_policy" "as" {
   for_each   = local.scaling == null ? {} : { emr_managed = local.scaling }
-  cluster_id = aws_emr_cluster.cp.id
+  cluster_id = aws_emr_cluster.cp["enabled"].id
   dynamic "compute_limits" {
     for_each = { for k, v in each.value : k => v if k == "compute_limits" }
     content {
