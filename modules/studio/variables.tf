@@ -15,7 +15,7 @@ variable "subnets" {
 ### emr studio
 variable "studio" {
   description = "EMR studio configuration"
-  default     = null
+  default     = {}
 }
 
 ### description
