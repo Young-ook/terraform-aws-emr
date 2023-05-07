@@ -1,10 +1,6 @@
-### network
-variable "vpc" {
-  description = "The VPC ID for EMR studio"
-  type        = string
-  default     = null
-}
+### input variables
 
+### network
 variable "subnets" {
   description = "The list of subnet IDs to deploy your EMR cluster"
   type        = list(string)
@@ -44,12 +40,6 @@ variable "task_node_groups" {
 variable "custom_scale_policy" {
   description = "Path to custom rendered scaling policy"
   default     = ""
-}
-
-### emr studio
-variable "studio" {
-  description = "EMR studio configuration"
-  default     = null
 }
 
 ### description

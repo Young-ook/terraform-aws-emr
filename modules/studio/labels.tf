@@ -3,8 +3,8 @@
 ### frigga name
 module "frigga" {
   source  = "Young-ook/spinnaker/aws//modules/frigga"
-  version = "2.3.6"
-  name    = var.name == null || var.name == "" ? "emr" : var.name
+  version = "2.3.5"
+  name    = var.name == null || var.name == "" ? "emr-studio" : var.name
   petname = var.name == null || var.name == "" ? true : false
 }
 

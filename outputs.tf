@@ -1,4 +1,4 @@
-# output variables
+### output variables
 
 output "cluster" {
   description = "The EMR cluster attributes"
@@ -9,11 +9,6 @@ output "cluster" {
   }
 }
 
-output "studio" {
-  description = "The EMR studio attributes"
-  value       = aws_emr_studio.studio
-}
-
 output "role" {
   description = "The generated role of the EMR node group"
   value = {
@@ -21,6 +16,5 @@ output "role" {
       control_plane = aws_iam_role.cp
       data_plane    = aws_iam_role.ng
     }
-    studio = aws_iam_role.studio
   }
 }
