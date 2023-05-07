@@ -59,7 +59,7 @@ terraform destroy -var-file fixture.tc1.tfvars
 
 # Additional Resources
 ## Amazon EMR Studio
-- [Enable Interactive Data Analytics at Petabyte Scale with EMR Studio](https://youtu.be/A5nkJgSqw5c)
+- [EMR Studio](https://github.com/Young-ook/terraform-aws-emr/tree/main/modules/studio/)
 
 ## AWS Lake Formation
 - [Integration Amazon EMR with AWS Lake Formation](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-lake-formation.html)
