@@ -19,7 +19,7 @@ variable "additional_slave_security_group" {
 ### emr cluster
 variable "cluster" {
   description = "EMR cluster control plane configuration"
-  default     = {}
+  default     = null
 }
 
 variable "master_node_groups" {
