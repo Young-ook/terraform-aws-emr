@@ -6,9 +6,6 @@ module "aws" {
 locals {
   cluster_enabled = var.cluster != null
   scaling         = local.cluster_enabled ? lookup(var.cluster, "scaling", local.default_cluster.scaling) : local.default_cluster.scaling
-  primary_fleet   = local.cluster_enabled ? lookup(var.cluster, "primary_fleet", local.default_cluster.primary_fleet) : local.default_cluster.primary_fleet
-  core_fleet      = local.cluster_enabled ? lookup(var.cluster, "core_fleet", local.default_cluster.core_fleet) : local.default_cluster.core_fleet
-  task_fleet      = local.cluster_enabled ? lookup(var.cluster, "task_fleet", local.default_cluster.task_fleet) : local.default_cluster.task_fleet
 }
 
 ### security/policy

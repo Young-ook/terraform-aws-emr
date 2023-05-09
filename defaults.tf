@@ -65,9 +65,6 @@ locals {
     ssh_key                = null
     scaling                = null
     termination_protection = false
-    primary_fleet          = local.default_primary_node_groups
-    core_fleet             = local.default_core_node_groups
-    task_fleet             = local.default_task_node_groups
   }
   default_scaling_policy = {
     compute_limits = {
