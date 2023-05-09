@@ -28,7 +28,7 @@ locals {
     timeout_action           = "SWITCH_TO_ON_DEMAND" # valid values: TERMINATE_CLUSTER | SWITCH_TO_ON_DEMAND
     timeout_duration_minutes = 10
   }
-  default_master_node_groups = {
+  default_primary_node_groups = {
     instance_type             = "m5.xlarge"
     target_on_demand_capacity = 1
     launch_specifications = {
@@ -65,7 +65,7 @@ locals {
     ssh_key                = null
     scaling                = null
     termination_protection = false
-    master_fleet           = local.default_master_node_groups
+    primary_fleet          = local.default_primary_node_groups
     core_fleet             = local.default_core_node_groups
     task_fleet             = local.default_task_node_groups
   }

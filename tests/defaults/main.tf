@@ -21,6 +21,6 @@ resource "test_assertions" "null" {
 
   check "null_cluster" {
     description = "check if the default emr cluster is null"
-    condition   = ! can(module.main.cluster.enabled)
+    condition   = !can(module.main.cluster.enabled)
   }
 }

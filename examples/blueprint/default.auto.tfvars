@@ -1,5 +1,11 @@
-tags               = { example = "emr_blueprint" }
-master_node_groups = {}
+tags = { example = "emr_blueprint" }
+primary_node_groups = {
+  instance_type_configs = [
+    {
+      instance_type = "m5.xlarge"
+    },
+  ]
+}
 core_node_groups = {
   instance_type_configs = [
     {

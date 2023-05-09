@@ -6,8 +6,8 @@ variable "subnets" {
   type        = list(string)
 }
 
-variable "additional_master_security_group" {
-  description = "Additional security group for master nodes"
+variable "additional_primary_security_group" {
+  description = "Additional security group for primary nodes"
   default     = null
 }
 
@@ -22,8 +22,8 @@ variable "cluster" {
   default     = null
 }
 
-variable "master_node_groups" {
-  description = "EMR master node groups configuration"
+variable "primary_node_groups" {
+  description = "EMR primary node groups configuration"
   default     = {}
 }
 

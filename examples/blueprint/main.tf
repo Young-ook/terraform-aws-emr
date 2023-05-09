@@ -53,12 +53,15 @@ module "emr-studio" {
 }
 
 module "emr" {
-  depends_on = [module.vpc]
-  source     = "Young-ook/emr/aws"
-  version    = "0.0.3"
-  name       = var.name
-  subnets    = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
-  cluster    = var.cluster
+  depends_on          = [module.vpc]
+  source              = "Young-ook/emr/aws"
+  version             = "0.0.4"
+  name                = var.name
+  subnets             = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
+  cluster             = var.cluster
+  primary_node_groups = var.primary_node_groups
+  core_node_groups    = var.core_node_groups
+  task_node_groups    = var.task_node_groups
 }
 
 ### s3
