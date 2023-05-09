@@ -35,22 +35,36 @@ module "vpc" {
 }
 
 ### emr
+module "emr-studio" {
+  depends_on = [module.vpc]
+  source     = "Young-ook/emr/aws//modules/studio"
+  version    = "0.0.3"
+  name       = var.name
+  vpc        = module.vpc.vpc.id
+  subnets    = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
+  studio = {
+    auth_mode           = "IAM"
+    default_s3_location = "s3://${module.s3.bucket.bucket}/data"
+    policy_arns = [
+      module.s3.policy_arns["read"],
+      module.s3.policy_arns["write"],
+    ]
+  }
+}
+
 module "emr" {
-  depends_on         = [module.vpc]
-  source             = "Young-ook/emr/aws"
-  version            = "0.0.1"
-  name               = var.name
-  subnets            = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
-  cluster            = var.cluster
-  master_node_groups = var.master_node_groups
-  core_node_groups   = var.core_node_groups
-  task_node_groups   = var.task_node_groups
+  depends_on = [module.vpc]
+  source     = "Young-ook/emr/aws"
+  version    = "0.0.3"
+  name       = var.name
+  subnets    = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
+  cluster    = var.cluster
 }
 
 ### s3
 module "s3" {
   source        = "Young-ook/sagemaker/aws//modules/s3"
-  version       = "0.3.2"
+  version       = "0.3.4"
   name          = var.name
   tags          = var.tags
   force_destroy = var.force_destroy
