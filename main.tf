@@ -6,9 +6,6 @@ module "aws" {
 locals {
   cluster_enabled = var.cluster != null
   scaling         = local.cluster_enabled ? lookup(var.cluster, "scaling", local.default_cluster.scaling) : local.default_cluster.scaling
-  master_fleet    = local.cluster_enabled ? lookup(var.cluster, "master_fleet", local.default_cluster.master_fleet) : local.default_cluster.master_fleet
-  core_fleet      = local.cluster_enabled ? lookup(var.cluster, "core_fleet", local.default_cluster.core_fleet) : local.default_cluster.core_fleet
-  task_fleet      = local.cluster_enabled ? lookup(var.cluster, "task_fleet", local.default_cluster.task_fleet) : local.default_cluster.task_fleet
 }
 
 ### security/policy
@@ -79,7 +76,7 @@ resource "aws_emr_cluster" "cp" {
 
   ec2_attributes {
     subnet_ids                        = var.subnets
-    additional_master_security_groups = var.additional_master_security_group
+    additional_master_security_groups = var.additional_primary_security_group
     additional_slave_security_groups  = var.additional_slave_security_group
     instance_profile                  = aws_iam_instance_profile.ng["enabled"].arn
     key_name                          = lookup(var.cluster, "ssh_key", local.default_cluster.ssh_key)
@@ -90,16 +87,16 @@ resource "aws_emr_cluster" "cp" {
     content {
       path = "s3://emr-bootstrap/actions/run-if"
       name = "runif"
-      args = ["instance.isMaster=true", "echo running on master node"]
+      args = ["instance.isMaster=true", "echo running on primary node"]
     }
   }
 
   master_instance_fleet {
-    name                      = join("-", [local.name, "master-fleet"])
-    target_on_demand_capacity = lookup(var.master_node_groups, "target_on_demand_capacity", local.default_master_node_groups.target_on_demand_capacity)
+    name                      = join("-", [local.name, "primary-fleet"])
+    target_on_demand_capacity = lookup(var.primary_node_groups, "target_on_demand_capacity", local.default_primary_node_groups.target_on_demand_capacity)
 
     dynamic "instance_type_configs" {
-      for_each = { for k, v in lookup(var.master_node_groups, "instance_type_configs", local.default_instance_type_configs) : k => v }
+      for_each = { for k, v in lookup(var.primary_node_groups, "instance_type_configs", local.default_instance_type_configs) : k => v }
       content {
         bid_price                                  = lookup(instance_type_configs.value, "bid_price", local.default_instance_type_config.bid_price)
         bid_price_as_percentage_of_on_demand_price = lookup(instance_type_configs.value, "bid_price_as_percentage_of_on_demand_price", local.default_instance_type_config.bid_price_as_percentage_of_on_demand_price)
@@ -118,7 +115,7 @@ resource "aws_emr_cluster" "cp" {
     }
 
     dynamic "launch_specifications" {
-      for_each = [lookup(var.master_node_groups, "launch_specifications", local.default_master_node_groups.launch_specifications)]
+      for_each = [lookup(var.primary_node_groups, "launch_specifications", local.default_primary_node_groups.launch_specifications)]
       content {
         dynamic "on_demand_specification" {
           for_each = lookup(launch_specifications.value, "on_demand_specification", null) == null ? [] : [lookup(launch_specifications.value, "on_demand_specification")]

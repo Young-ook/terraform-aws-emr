@@ -32,7 +32,7 @@ module "main" {
       }
     }
   }
-  master_node_groups = {}
+  primary_node_groups = {}
   core_node_groups = {
     instance_type_configs = [
       {

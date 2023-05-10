@@ -1,5 +1,5 @@
 cluster = {}
-master_node_groups = {
+primary_node_groups = {
   instance_type_configs = [
     {
       instance_type = "m6g.xlarge"
