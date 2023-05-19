@@ -19,7 +19,7 @@ variable "azs" {
   default     = ["ap-northeast-2a", "ap-northeast-2c", "ap-northeast-2d"]
 }
 
-### cluster
+### emr
 variable "cluster" {
   description = "EMR cluster control plane configuration"
   default     = {}
@@ -38,6 +38,12 @@ variable "core_node_groups" {
 variable "task_node_groups" {
   description = "EMR task node groups configuration"
   default     = {}
+}
+
+### kubernetes
+variable "managed_node_groups" {
+  description = "Amazon managed node groups definition"
+  default     = []
 }
 
 ### s3
