@@ -37,9 +37,9 @@ task_node_groups = {
 managed_node_groups = [
   {
     name          = "spark"
-    min_size      = 1
-    max_size      = 3
-    desired_size  = 1
+    desired_size  = 3
+    min_size      = 3
+    max_size      = 9
     instance_type = "m5.xlarge"
   },
 ]
