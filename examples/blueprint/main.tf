@@ -52,7 +52,7 @@ module "emr-studio" {
   }
 }
 
-module "emr" {
+module "emr-ec2" {
   depends_on          = [module.vpc]
   source              = "Young-ook/emr/aws"
   version             = "0.0.4"
@@ -62,6 +62,28 @@ module "emr" {
   primary_node_groups = var.primary_node_groups
   core_node_groups    = var.core_node_groups
   task_node_groups    = var.task_node_groups
+}
+
+module "emr-eks" {
+  depends_on = [module.eks]
+  source     = "Young-ook/emr/aws//modules/emr-containers"
+  version    = "0.0.2"
+  name       = module.eks.cluster.name
+  container_providers = {
+    id        = module.eks.cluster.name
+    namespace = "default"
+  }
+}
+
+module "eks" {
+  source              = "Young-ook/eks/aws"
+  version             = "2.0.3"
+  name                = var.name
+  tags                = var.tags
+  subnets             = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
+  kubernetes_version  = var.kubernetes_version
+  enable_ssm          = var.enable_ssm
+  managed_node_groups = var.managed_node_groups
 }
 
 ### s3

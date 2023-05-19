@@ -5,5 +5,8 @@ output "vpc" {
 
 output "emr" {
   description = "Amazon EMR cluster"
-  value       = module.emr
+  value = {
+    emr-ec2 = module.emr-ec2
+    emr-eks = module.emr-eks
+  }
 }

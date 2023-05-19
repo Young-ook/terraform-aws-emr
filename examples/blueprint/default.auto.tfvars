@@ -34,3 +34,12 @@ task_node_groups = {
     }
   ]
 }
+managed_node_groups = [
+  {
+    name          = "spark"
+    min_size      = 1
+    max_size      = 3
+    desired_size  = 1
+    instance_type = "m5.xlarge"
+  },
+]
