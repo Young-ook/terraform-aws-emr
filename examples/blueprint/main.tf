@@ -36,7 +36,7 @@ module "vpc" {
 
 ### emr
 module "emr-studio" {
-  depends_on = [module.vpc]
+  depends_on = [module.vpc, module.s3]
   source     = "Young-ook/emr/aws//modules/emr-studio"
   version    = "0.0.4"
   name       = var.name
