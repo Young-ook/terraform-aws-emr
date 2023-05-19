@@ -81,8 +81,8 @@ module "eks" {
   name                = var.name
   tags                = var.tags
   subnets             = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
-  kubernetes_version  = var.kubernetes_version
-  enable_ssm          = var.enable_ssm
+  kubernetes_version  = "1.25"
+  enable_ssm          = true
   managed_node_groups = var.managed_node_groups
 }
 
