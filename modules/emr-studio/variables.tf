@@ -18,6 +18,11 @@ variable "studio" {
   default     = {}
 }
 
+variable "serverless" {
+  description = "EMR serverless configuration"
+  default     = null
+}
+
 ### description
 variable "name" {
   description = "EMR studio name"

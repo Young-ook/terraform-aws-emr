@@ -5,6 +5,10 @@ module "aws" {
   source = "Young-ook/spinnaker/aws//modules/aws-partitions"
 }
 
+locals {
+  serverless_enabled = var.serverless != null
+}
+
 ### security/policy
 resource "aws_iam_role" "studio" {
   name = local.name
@@ -55,7 +59,7 @@ resource "aws_emr_studio" "studio" {
   auth_mode                   = lookup(var.studio, "auth_mode", local.default_studio["auth_mode"])
   default_s3_location         = lookup(var.studio, "default_s3_location")
   vpc_id                      = var.vpc
-  subnet_ids                  = var.subnets
+  subnet_ids                  = try(var.subnets, null)
   service_role                = aws_iam_role.studio.arn
   engine_security_group_id    = aws_security_group.studio["engine"].id
   workspace_security_group_id = aws_security_group.studio["workspace"].id
@@ -99,4 +103,68 @@ resource "aws_security_group_rule" "studio-workspace-egress-to-internet" {
   to_port           = "443"
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
+}
+
+### EMR Studio is the user console that you can use to manage your EMR Serverless applications.
+### If an EMR Studio doesn't exist in your account when you create your first EMR Serverless application,
+### AWS will automatically create one for you. For more details, here is the Amazon EMR serverless user guide.
+### https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/emr-serverless.html
+### cluster/serverless
+resource "aws_emrserverless_application" "emr" {
+  for_each      = toset(local.serverless_enabled ? ["enabled"] : [])
+  name          = local.name
+  tags          = merge(var.tags, local.default-tags)
+  architecture  = lookup(var.serverless, "architecture", local.default_cluster["architecture"])
+  release_label = lookup(var.serverless, "release", local.default_cluster["release"])
+  type          = lookup(var.serverless, "type", local.default_cluster["type"])
+
+  network_configuration {
+    security_group_ids = [aws_security_group.studio["workspace"].id]
+    subnet_ids         = try(var.subnets, null)
+  }
+
+  dynamic "auto_start_configuration" {
+    for_each = [try(var.serverless.auto_start_config, local.default_cluster.auto_start_config)]
+    content {
+      enabled = try(auto_start_configuration.value.enabled, null)
+    }
+  }
+
+  dynamic "auto_stop_configuration" {
+    for_each = [try(var.serverless.auto_stop_config, local.default_cluster.auto_stop_config)]
+    content {
+      enabled              = try(auto_stop_configuration.value.enabled, null)
+      idle_timeout_minutes = try(auto_stop_configuration.value.idle_timeout_minutes, null)
+    }
+  }
+
+  dynamic "initial_capacity" {
+    for_each = { for k, v in try(var.serverless.initial_capacity, local.default_initial_capacity) : k => v }
+    content {
+      initial_capacity_type = initial_capacity.value["initial_capacity_type"]
+      dynamic "initial_capacity_config" {
+        for_each = try([initial_capacity.value["initial_capacity_config"]], [])
+        content {
+          worker_count = try(initial_capacity_config.value["worker_count"], 1)
+          dynamic "worker_configuration" {
+            for_each = try([initial_capacity_config.value["worker_config"]], [])
+            content {
+              cpu    = try(worker_configuration.value["cpu"], local.default_instance_capacity["cpu"])
+              disk   = try(worker_configuration.value["disk"], local.default_instance_capacity["disk"])
+              memory = try(worker_configuration.value["memory"], local.default_instance_capacity["memory"])
+            }
+          }
+        }
+      }
+    }
+  }
+
+  dynamic "maximum_capacity" {
+    for_each = [try(var.serverless.maximum_capacity, [])]
+    content {
+      cpu    = try(maximum_capacity.value["cpu"], local.default_instance_capacity["cpu"])
+      disk   = try(maximum_capacity.value["disk"], local.default_instance_capacity["disk"])
+      memory = try(maximum_capacity.value["memory"], local.default_instance_capacity["memory"])
+    }
+  }
 }
