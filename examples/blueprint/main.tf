@@ -37,8 +37,8 @@ module "vpc" {
 ### emr
 module "emr-studio" {
   depends_on = [module.vpc]
-  source     = "Young-ook/emr/aws//modules/studio"
-  version    = "0.0.3"
+  source     = "Young-ook/emr/aws//modules/emr-studio"
+  version    = "0.0.4"
   name       = var.name
   vpc        = module.vpc.vpc.id
   subnets    = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
