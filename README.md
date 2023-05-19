@@ -5,7 +5,6 @@
 
 ## Examples
 - [EMR Blueprint](https://github.com/Young-ook/terraform-aws-emr/tree/main/examples/blueprint)
-- [Amazon EMR on Amazon EKS](https://github.com/Young-ook/terraform-aws-eks/tree/main/examples/analytics)
 
 ## Getting started
 ### AWS CLI
