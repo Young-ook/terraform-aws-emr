@@ -36,7 +36,7 @@ resource "aws_iam_role_policy_attachment" "studio" {
 }
 
 resource "aws_iam_policy" "studio" {
-  name        = join("-", [local.name, "emr-studio"])
+  name        = local.name
   tags        = merge(var.tags, local.default-tags)
   description = format("Allow an EMR Studio to manage AWS resources")
   policy      = file("${path.module}/templates/studio-policy.tpl")
@@ -64,7 +64,7 @@ resource "aws_emr_studio" "studio" {
 ### security/firewall
 resource "aws_security_group" "studio" {
   for_each = toset(["engine", "workspace"])
-  name     = join("-", [local.name, "studio", each.key])
+  name     = join("-", [local.name, each.key])
   tags     = merge(var.tags, local.default-tags)
   vpc_id   = var.vpc
 }
