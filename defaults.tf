@@ -61,7 +61,7 @@ locals {
   default_cluster = {
     applications           = ["Spark", "Hadoop", "Hive"]
     bootstrap              = []
-    release                = "emr-5.36.0"
+    release                = "emr-6.10.0"
     ssh_key                = null
     scaling                = null
     termination_protection = false
