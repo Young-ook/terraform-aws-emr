@@ -20,9 +20,6 @@ locals {
       idle_timeout_minutes = null
     }
   }
-  default_maximum_capacity = {
-    worker_config = local.default_instance_capacity
-  }
   default_initial_capacity = [
     {
       initial_capacity_type = "Driver"
@@ -40,8 +37,14 @@ locals {
     }
   ]
   default_instance_capacity = {
-    cpu    = "8 vCPU"
+    cpu    = "4 vCPU"
     disk   = "64 GB"
+    memory = "12 GB"
+  }
+  default_maximum_capacity = {
+    cpu    = "8 vCPU"
+    disk   = "128 GB"
     memory = "24 GB"
   }
+
 }

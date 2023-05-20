@@ -162,9 +162,9 @@ resource "aws_emrserverless_application" "emr" {
   dynamic "maximum_capacity" {
     for_each = [try(var.serverless.maximum_capacity, [])]
     content {
-      cpu    = try(maximum_capacity.value["cpu"], local.default_instance_capacity["cpu"])
-      disk   = try(maximum_capacity.value["disk"], local.default_instance_capacity["disk"])
-      memory = try(maximum_capacity.value["memory"], local.default_instance_capacity["memory"])
+      cpu    = try(maximum_capacity.value["cpu"], local.default_maximum_capacity["cpu"])
+      disk   = try(maximum_capacity.value["disk"], local.default_maximum_capacity["disk"])
+      memory = try(maximum_capacity.value["memory"], local.default_maximum_capacity["memory"])
     }
   }
 }
