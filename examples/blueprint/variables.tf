@@ -10,7 +10,7 @@ variable "aws_region" {
 variable "use_default_vpc" {
   description = "A feature flag for whether to use default vpc"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "azs" {
