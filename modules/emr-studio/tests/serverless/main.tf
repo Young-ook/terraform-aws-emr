@@ -44,7 +44,10 @@ module "main" {
   }
   applications = [
     {
-      name = "default"
+      name = "default-serverless"
+    },
+    {
+      name = "custom-spark"
       initial_capacity = [
         {
           initial_capacity_type = "Driver"
@@ -72,6 +75,22 @@ module "main" {
         cpu    = "48 vCPU"
         memory = "144 GB"
       }
+    },
+    {
+      name = "custom-spark-withonly-init-config"
+      initial_capacity = [
+        {
+          initial_capacity_type = "Driver"
+          initial_capacity_config = {
+            worker_count = 1
+            worker_configuration = {
+              cpu    = "4 vCPU"
+              disk   = "64 GB"
+              memory = "12 GB"
+            }
+          }
+        },
+      ]
     },
   ]
 }
