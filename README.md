@@ -4,7 +4,9 @@
 [Amazon EMR](https://aws.amazon.com/emr/) is the industry-leading cloud big data solution for petabyte-scale data processing, interactive analytics, and machine learning using open-source frameworks such as Apache Spark, Apache Hive, and Presto.
 
 ## Examples
-- [EMR Blueprint](https://github.com/Young-ook/terraform-aws-emr/tree/main/examples/blueprint)
+- [Amazon EKS Blueprint](https://github.com/Young-ook/terraform-aws-eks/tree/main/examples/blueprint)
+- [Amazon EMR Blueprint](https://github.com/Young-ook/terraform-aws-emr/tree/main/examples/blueprint)
+- [Amazon SageMaker Blueprint](https://github.com/Young-ook/terraform-aws-sagemaker/tree/main/examples/blueprint)
 
 ## Getting started
 ### AWS CLI
