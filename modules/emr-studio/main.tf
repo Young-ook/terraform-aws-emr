@@ -6,7 +6,7 @@ module "aws" {
 }
 
 locals {
-  serverless_enabled = var.serverless != null
+  serverless_enabled = length(var.applications) > 0 ? true : false
 }
 
 ### security/policy
@@ -110,13 +110,13 @@ resource "aws_security_group_rule" "studio-workspace-egress-to-internet" {
 ### AWS will automatically create one for you. For more details, here is the Amazon EMR serverless user guide.
 ### https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/emr-serverless.html
 ### cluster/serverless
-resource "aws_emrserverless_application" "emr" {
-  for_each      = toset(local.serverless_enabled ? ["enabled"] : [])
-  name          = local.name
-  tags          = merge(var.tags, local.default-tags)
-  architecture  = lookup(var.serverless, "architecture", local.default_cluster["architecture"])
-  release_label = lookup(var.serverless, "release", local.default_cluster["release"])
-  type          = lookup(var.serverless, "type", local.default_cluster["type"])
+resource "aws_emrserverless_application" "apps" {
+  for_each      = { for app in var.applications : app.name => app }
+  name          = each.key
+  tags          = merge(var.tags, local.default-tags, { Name = each.key })
+  architecture  = lookup(each.value, "architecture", local.default_cluster["architecture"])
+  release_label = lookup(each.value, "release", local.default_cluster["release"])
+  type          = lookup(each.value, "type", local.default_cluster["type"])
 
   network_configuration {
     security_group_ids = [aws_security_group.studio["workspace"].id]
@@ -124,14 +124,14 @@ resource "aws_emrserverless_application" "emr" {
   }
 
   dynamic "auto_start_configuration" {
-    for_each = [try(var.serverless.auto_start_config, local.default_cluster.auto_start_config)]
+    for_each = [try(each.value["auto_start_config"], local.default_cluster.auto_start_config)]
     content {
       enabled = try(auto_start_configuration.value.enabled, null)
     }
   }
 
   dynamic "auto_stop_configuration" {
-    for_each = [try(var.serverless.auto_stop_config, local.default_cluster.auto_stop_config)]
+    for_each = [try(each.value["auto_stop_config"], local.default_cluster.auto_stop_config)]
     content {
       enabled              = try(auto_stop_configuration.value.enabled, null)
       idle_timeout_minutes = try(auto_stop_configuration.value.idle_timeout_minutes, null)
@@ -139,7 +139,7 @@ resource "aws_emrserverless_application" "emr" {
   }
 
   dynamic "initial_capacity" {
-    for_each = { for k, v in try(var.serverless.initial_capacity, local.default_initial_capacity) : k => v }
+    for_each = { for k, v in try(each.value["initial_capacity"], local.default_initial_capacity) : k => v }
     content {
       initial_capacity_type = initial_capacity.value["initial_capacity_type"]
       dynamic "initial_capacity_config" {
@@ -160,7 +160,7 @@ resource "aws_emrserverless_application" "emr" {
   }
 
   dynamic "maximum_capacity" {
-    for_each = [try(var.serverless.maximum_capacity, [])]
+    for_each = [try(each.value["maximum_capacity"], [])]
     content {
       cpu    = try(maximum_capacity.value["cpu"], local.default_maximum_capacity["cpu"])
       disk   = try(maximum_capacity.value["disk"], local.default_maximum_capacity["disk"])
