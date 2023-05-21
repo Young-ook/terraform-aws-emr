@@ -22,20 +22,24 @@ locals {
   }
   default_initial_capacity = [
     {
+      # The worker type for an analytics framework.
+      # For Spark applications, the key can either be set to Driver or Executor.
+      # For Hive applications, it can be set to HiveDriver or TezTask.
       initial_capacity_type = "Driver"
       initial_capacity_config = {
-        worker_count  = 1
+        worker_count  = local.default_instance_count
         worker_config = local.default_instance_capacity
       }
     },
     {
       initial_capacity_type = "Executor"
       initial_capacity_config = {
-        worker_count  = 1
+        worker_count  = local.default_instance_count
         worker_config = local.default_instance_capacity
       }
     }
   ]
+  default_instance_count = 1
   default_instance_capacity = {
     cpu    = "4 vCPU"
     disk   = "64 GB"
@@ -46,5 +50,4 @@ locals {
     disk   = "128 GB"
     memory = "24 GB"
   }
-
 }

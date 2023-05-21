@@ -111,6 +111,7 @@ resource "aws_security_group_rule" "studio-workspace-egress-to-internet" {
 ### https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/emr-serverless.html
 ### cluster/serverless
 resource "aws_emrserverless_application" "apps" {
+  depends_on    = [aws_emr_studio.studio]
   for_each      = { for app in var.applications : app.name => app }
   name          = each.key
   tags          = merge(var.tags, local.default-tags, { Name = each.key })
@@ -143,11 +144,11 @@ resource "aws_emrserverless_application" "apps" {
     content {
       initial_capacity_type = initial_capacity.value["initial_capacity_type"]
       dynamic "initial_capacity_config" {
-        for_each = try([initial_capacity.value["initial_capacity_config"]], [])
+        for_each = can(initial_capacity.value["initial_capacity_config"]) ? [initial_capacity.value["initial_capacity_config"]] : []
         content {
-          worker_count = try(initial_capacity_config.value["worker_count"], 1)
+          worker_count = try(initial_capacity_config.value["worker_count"], local.default_instance_count)
           dynamic "worker_configuration" {
-            for_each = try([initial_capacity_config.value["worker_config"]], [])
+            for_each = can(initial_capacity_config.value["worker_config"]) ? [initial_capacity_config.value["worker_config"]] : []
             content {
               cpu    = try(worker_configuration.value["cpu"], local.default_instance_capacity["cpu"])
               disk   = try(worker_configuration.value["disk"], local.default_instance_capacity["disk"])
@@ -160,7 +161,7 @@ resource "aws_emrserverless_application" "apps" {
   }
 
   dynamic "maximum_capacity" {
-    for_each = [try(each.value["maximum_capacity"], [])]
+    for_each = can(each.value["maximum_capacity"]) ? [each.value["maximum_capacity"]] : []
     content {
       cpu    = try(maximum_capacity.value["cpu"], local.default_maximum_capacity["cpu"])
       disk   = try(maximum_capacity.value["disk"], local.default_maximum_capacity["disk"])
