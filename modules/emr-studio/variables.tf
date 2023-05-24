@@ -18,6 +18,15 @@ variable "studio" {
   default     = {}
 }
 
+variable "applications" {
+  description = "List of EMR serverless applications"
+  default     = []
+  validation {
+    condition     = var.applications != null
+    error_message = "The list of serverless applications must not be null."
+  }
+}
+
 ### description
 variable "name" {
   description = "EMR studio name"

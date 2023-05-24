@@ -6,6 +6,11 @@ output "emr" {
   }
 }
 
+output "studio" {
+  description = "Amazon EMR studio"
+  value       = module.emr-studio
+}
+
 output "apps" {
   description = "Bash script to run a basic pyspark job on your virtual EMR cluster"
   value = {
