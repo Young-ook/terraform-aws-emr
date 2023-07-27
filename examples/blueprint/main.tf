@@ -174,3 +174,9 @@ module "s3" {
     }
   ]
 }
+
+### data lake
+module "lf" {
+  source = "./lf"
+  s3_arn = module.s3.bucket.arn
+}
