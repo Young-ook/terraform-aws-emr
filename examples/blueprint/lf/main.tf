@@ -5,7 +5,7 @@ variable "s3_arn" {
 ### data lake
 module "datalake-admin" {
   source           = "Young-ook/passport/aws//modules/iam-role"
-  version          = "0.0.7"
+  version          = "0.0.9"
   name             = "datalake-admin"
   tags             = { desc = "data lake admin" }
   session_duration = "7200"
