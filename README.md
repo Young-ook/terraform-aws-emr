@@ -61,3 +61,5 @@ terraform apply
 ```
 
 # Additional Resources
+## Amazon EMR
+- [Amazon EMR Migration Guide - How to Move Apache Spark and Apache Hadoop From On-Premises to AWS](https://pages.awscloud.com/rs/112-TZM-766/images/amazon_emr_migration_guide_mkto.pdf)
