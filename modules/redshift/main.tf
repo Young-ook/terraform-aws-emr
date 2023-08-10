@@ -68,7 +68,6 @@ resource "aws_redshift_parameter_group" "dw" {
   }
 }
 
-
 ### datawarehouse/provisioned
 resource "aws_redshift_cluster" "dw" {
   for_each                             = local.provisioned_mode ? toset(["enabled"]) : []
