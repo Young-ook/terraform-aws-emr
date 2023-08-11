@@ -20,7 +20,7 @@ variable "subnets" {
 ### redshift cluster
 #  [CAUTION] Changing the snapshot ID. will force a new resource.
 #
-variable "redshift_cluster" {
+variable "cluster" {
   description = "Redshift cluster definition"
   default     = {}
 }

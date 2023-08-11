@@ -5,7 +5,7 @@ module "aws" {
 }
 
 locals {
-  default_redshift_cluster = {
+  default_cluster = {
     mode                                 = "provisioned" # allowed values: provisioned | serverless
     family                               = "redshift-1.0"
     version                              = "1.0"
