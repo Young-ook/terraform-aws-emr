@@ -12,5 +12,8 @@ EMR Studio kernels and applications run on EMR clusters, so you get the benefit 
 This module requires *terraform*. If you don't have the terraform tool in your environment, go to the main [page](https://github.com/Young-ook/terraform-aws-emr) of this repository and follow the installation instructions.
 
 # Additional Resources
+## Amazon EMR Serverless
+- [EMR Serverless Samples](https://github.com/aws-samples/emr-serverless-samples)
 ## Amazon EMR Studio
 - [Enable Interactive Data Analytics at Petabyte Scale with EMR Studio](https://youtu.be/A5nkJgSqw5c)
+
