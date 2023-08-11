@@ -1,4 +1,4 @@
-tags = { example = "emr_blueprint" }
+tags = { example = "datalake_blueprint" }
 primary_node_groups = {
   instance_type_configs = [
     {
