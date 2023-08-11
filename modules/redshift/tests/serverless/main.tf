@@ -15,7 +15,7 @@ module "main" {
   source  = "../.."
   vpc     = module.vpc.vpc.id
   subnets = values(module.vpc.subnets["public"])
-  redshift_cluster = {
+  cluster = {
     mode = "serverless"
   }
 }
