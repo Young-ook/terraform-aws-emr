@@ -5,7 +5,6 @@
 
 ## Examples
 - [Amazon EMR Blueprint](https://github.com/Young-ook/terraform-aws-emr/tree/main/examples/blueprint)
-- [Amazon Redshift Blueprint](https://github.com/Young-ook/terraform-aws-redshift/tree/main/examples/blueprint)
 - [Amazon SageMaker Blueprint](https://github.com/Young-ook/terraform-aws-sagemaker/tree/main/examples/blueprint)
 - [Data on Amazon EKS](https://github.com/Young-ook/terraform-aws-eks/blob/main/examples/data-ai)
 
