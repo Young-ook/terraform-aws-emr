@@ -1,5 +1,3 @@
-# Variables for providing to module fixture codes
-
 ### network
 variable "aws_region" {
   description = "The aws region to deploy"
@@ -20,7 +18,7 @@ variable "azs" {
 }
 
 ### emr
-variable "cluster" {
+variable "emr_cluster" {
   description = "EMR cluster control plane configuration"
   default     = {}
 }
@@ -44,6 +42,12 @@ variable "task_node_groups" {
 variable "managed_node_groups" {
   description = "Amazon managed node groups definition"
   default     = []
+}
+
+### redshift
+variable "redshift_cluster" {
+  description = "Redshift cluster definition"
+  default     = {}
 }
 
 ### s3

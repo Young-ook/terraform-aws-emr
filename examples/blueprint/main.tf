@@ -10,13 +10,13 @@ provider "aws" {
 
 module "aws" {
   source  = "Young-ook/spinnaker/aws//modules/aws-partitions"
-  version = "2.3.5"
+  version = "3.0.0"
 }
 
 ### vpc
 module "vpc" {
   source  = "Young-ook/vpc/aws"
-  version = "1.0.3"
+  version = "1.0.5"
   name    = var.name
   tags    = var.tags
   vpc_config = var.use_default_vpc ? null : {
@@ -58,7 +58,7 @@ module "emr-ec2" {
   version             = "0.0.4"
   name                = var.name
   subnets             = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
-  cluster             = var.cluster
+  cluster             = var.emr_cluster
   primary_node_groups = var.primary_node_groups
   core_node_groups    = var.core_node_groups
   task_node_groups    = var.task_node_groups
@@ -179,4 +179,36 @@ module "s3" {
 module "lf" {
   source = "./lf"
   s3_arn = module.s3.bucket.arn
+}
+
+### redshift
+module "redshift" {
+  depends_on       = [module.vpc]
+  source           = "../../modules/redshift"
+  name             = var.name
+  tags             = var.tags
+  vpc              = module.vpc.vpc.id
+  subnets          = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
+  cidrs            = [module.vpc.vpc.cidr_block]
+  redshift_cluster = var.redshift_cluster
+}
+
+### application/workbench
+module "ec2" {
+  depends_on = [module.redshift]
+  source     = "Young-ook/ssm/aws"
+  version    = "1.0.5"
+  name       = var.name
+  tags       = var.tags
+  subnets    = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
+  node_groups = [
+    {
+      name          = "workbench"
+      min_size      = 1
+      max_size      = 1
+      desired_size  = 1
+      instance_type = "m6i.large"
+      tags          = { purpose = "workbench" }
+    },
+  ]
 }
