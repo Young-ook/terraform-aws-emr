@@ -183,14 +183,14 @@ module "lf" {
 
 ### redshift
 module "redshift" {
-  depends_on       = [module.vpc]
-  source           = "../../modules/redshift"
-  name             = var.name
-  tags             = var.tags
-  vpc              = module.vpc.vpc.id
-  subnets          = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
-  cidrs            = [module.vpc.vpc.cidr_block]
-  redshift_cluster = var.redshift_cluster
+  depends_on = [module.vpc]
+  source     = "../../modules/redshift"
+  name       = var.name
+  tags       = var.tags
+  vpc        = module.vpc.vpc.id
+  subnets    = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
+  cidrs      = [module.vpc.vpc.cidr_block]
+  cluster    = var.redshift_cluster
 }
 
 ### application/workbench
