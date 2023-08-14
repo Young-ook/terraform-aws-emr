@@ -7,6 +7,24 @@
 ### Prerequisites
 This module requires *terraform*. If you don't have the terraform tool in your environment, go to the main [page](https://github.com/Young-ook/terraform-aws-emr) of this repository and follow the installation instructions.
 
+### Quickstart
+```
+module "vpc" {
+  source  = "Young-ook/vpc/aws"
+}
+
+module "redshift" {
+  source  = "Young-ook/emr/aws//modules/redshift"
+  vpc     = module.vpc.vpc.id
+  subnets = values(module.vpc.subnets["public"])
+}
+```
+Run terraform:
+```
+terraform init
+terraform apply
+```
+
 # Additional Resources
 ## Amazon Redshift
 ## Amazon Redshift Serverless
