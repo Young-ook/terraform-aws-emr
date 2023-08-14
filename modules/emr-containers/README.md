@@ -11,6 +11,30 @@ This module requires *eksctl* which is an open-source cli tool for EKS cluster m
 
 :warning: **This example requires the eksctl version 0.135.0 or higher**
 
+### Quickstart
+```
+module "vpc" {
+  source  = "Young-ook/vpc/aws"
+}
+
+module "eks" {
+  source  = "Young-ook/eks/aws"
+  subnets = values(module.vpc.subnets["public"])
+}
+
+module "emr-containers" {
+  source  = "Young-ook/emr/aws//modules/emr-containers"
+  container_providers = {
+    id = module.eks.cluster.name
+  }
+}
+```
+Run terraform:
+```
+terraform init
+terraform apply
+```
+
 # Additional Resources
 ## Amazon EMR on Amazon EKS
 - [Amazon EMR on Amazon EKS Developer Guide](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/emr-eks.html)
