@@ -15,6 +15,9 @@ module "main" {
   source  = "../.."
   vpc     = module.vpc.vpc.id
   subnets = values(module.vpc.subnets["public"])
+  cluster = {
+    mode = "serverless"
+  }
 }
 
 resource "test_assertions" "pet_name" {
