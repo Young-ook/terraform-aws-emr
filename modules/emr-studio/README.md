@@ -11,6 +11,36 @@ EMR Studio kernels and applications run on EMR clusters, so you get the benefit 
 ### Prerequisites
 This module requires *terraform*. If you don't have the terraform tool in your environment, go to the main [page](https://github.com/Young-ook/terraform-aws-emr) of this repository and follow the installation instructions.
 
+### Quickstart
+```
+module "vpc" {
+  source  = "Young-ook/vpc/aws"
+}
+
+module "s3" {
+  source  = "Young-ook/sagemaker/aws//modules/s3"
+}
+
+module "emr-studio" {
+  source  = "Young-ook/sagemaker/aws//modules/emr-studio"
+  vpc     = module.vpc.vpc.id
+  subnets = values(module.vpc.subnets["public"])
+  studio = {
+    auth_mode           = "IAM"
+    default_s3_location = "s3://${module.s3.bucket.bucket}/data"
+    policy_arns = [
+      module.s3.policy_arns["read"],
+      module.s3.policy_arns["write"],
+    ]
+  }
+}
+```
+Run terraform:
+```
+terraform init
+terraform apply
+```
+
 # Additional Resources
 ## Amazon EMR Serverless
 - [EMR Serverless Samples](https://github.com/aws-samples/emr-serverless-samples)
