@@ -86,6 +86,7 @@ Amazon S3 (Simple Storage Service) is an object storage service that offers indu
 
 ## Applications
 - [PySpark Pi](./apps/README.md#pi)
+- [Tickit](./apps/README.md#tickit)
 
 ## Clean up
 To destroy all infrastrcuture, run terraform:
