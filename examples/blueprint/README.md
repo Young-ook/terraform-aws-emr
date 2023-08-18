@@ -85,6 +85,7 @@ Amazon S3 (Simple Storage Service) is an object storage service that offers indu
 ![aws-s3-lc-int-tiering](../../images/aws-s3-lc-int-tiering.png)
 
 ## Applications
+- [EMR Serverless Examples](https://github.com/aws-samples/emr-serverless-samples/tree/main/examples)
 - [PySpark Pi](./apps/README.md#pi)
 - [Tickit](./apps/README.md#tickit)
 
