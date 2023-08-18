@@ -176,8 +176,8 @@ module "s3" {
 }
 
 ### datalake
-module "lf" {
-  source    = "./lf"
+module "datalake" {
+  source    = "./datalake"
   s3_arn    = module.s3.bucket.arn
   s3_bucket = module.s3.bucket.id
 }
