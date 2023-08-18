@@ -1,11 +1,3 @@
-variable "s3_arn" {
-  type = string
-}
-
-variable "s3_bucket" {
-  type = string
-}
-
 ### aws partitions
 module "aws" {
   source = "Young-ook/spinnaker/aws//modules/aws-partitions"
@@ -29,6 +21,96 @@ locals {
     }
   }
 }
+
+### s3
+module "s3" {
+  source        = "Young-ook/sagemaker/aws//modules/s3"
+  version       = "0.3.4"
+  name          = var.name
+  tags          = var.tags
+  force_destroy = var.force_destroy
+  bucket_policy = {
+    vpce-only = {
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Sid = "AllowAccessFromVpcEndpoint"
+            Action = [
+              "s3:GetObject",
+              "s3:PutObject",
+              "s3:ListBucket"
+            ]
+            Effect = "Deny"
+            Principal = {
+              AWS = flatten([module.aws.caller.account_id, ])
+            }
+            Resource = [join("/", [module.s3.bucket.arn, "*"]), module.s3.bucket.arn, ]
+            Condition = {
+              StringNotEquals = {
+                "aws:sourceVpce" = var.vpce
+              }
+            }
+          },
+          {
+            Sid    = "AllowTerraformToReadBuckets"
+            Action = "s3:ListBucket"
+            Effect = "Allow"
+            Principal = {
+              AWS = flatten([module.aws.caller.account_id, ])
+            }
+            Resource = [module.s3.bucket.arn, ]
+          }
+        ]
+      })
+    }
+  }
+  lifecycle_rules = [
+    {
+      id     = "s3-intelligent-tiering"
+      status = "Enabled"
+      filter = {
+        prefix = ""
+      }
+      transition = [
+        {
+          days = 0
+          # valid values for 'storage_class':
+          #   STANDARD_IA, ONEZONE_IA, INTELLIGENT_TIERING,
+          #   GLACIER, DEEP_ARCHIVE, GLACIER_IR
+          storage_class = "INTELLIGENT_TIERING"
+        },
+      ]
+    },
+  ]
+  intelligent_tiering_archive_rules = [
+    {
+      state = "Enabled"
+      filter = [
+        {
+          prefix = "logs/"
+          tags = {
+            priority = "high"
+            class    = "blue"
+          }
+        },
+      ]
+      tiering = [
+        {
+          # allowed values for 'access_tier':
+          #   ARCHIVE_ACCESS, DEEP_ARCHIVE_ACCESS
+          access_tier = "ARCHIVE_ACCESS"
+          days        = 125
+        },
+        {
+          access_tier = "DEEP_ARCHIVE_ACCESS"
+          days        = 180
+        },
+      ]
+    }
+  ]
+}
+
 
 ### security/policy
 module "roles" {
@@ -56,7 +138,7 @@ resource "aws_lakeformation_data_lake_settings" "lf" {
 }
 
 resource "aws_lakeformation_resource" "lf" {
-  arn = var.s3_arn
+  arn = module.s3.bucket.arn
 }
 
 resource "aws_lakeformation_permissions" "lf" {
@@ -72,7 +154,7 @@ resource "aws_lakeformation_permissions" "lf" {
 ### database
 resource "aws_athena_database" "athena" {
   name          = "hello"
-  bucket        = var.s3_bucket
+  bucket        = module.s3.bucket.bucket
   force_destroy = true
 }
 
@@ -86,4 +168,10 @@ resource "aws_glue_catalog_table" "glue" {
   name          = "medicare"
   description   = "Test Glue Catalog table"
   database_name = aws_glue_catalog_database.glue.name
+}
+
+### output variables
+output "s3" {
+  description = "Amazon S3 bucket"
+  value       = module.s3
 }
