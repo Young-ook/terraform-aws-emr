@@ -175,10 +175,11 @@ module "s3" {
   ]
 }
 
-### data lake
+### datalake
 module "lf" {
-  source = "./lf"
-  s3_arn = module.s3.bucket.arn
+  source    = "./lf"
+  s3_arn    = module.s3.bucket.arn
+  s3_bucket = module.s3.bucket.id
 }
 
 ### redshift
