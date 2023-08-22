@@ -8,9 +8,10 @@ provider "aws" {
   region = var.aws_region
 }
 
-module "aws" {
-  source  = "Young-ook/spinnaker/aws//modules/aws-partitions"
-  version = "3.0.0"
+### datalake
+module "datalake" {
+  source = "./datalake"
+  vpce   = module.vpc.vpce.s3.id
 }
 
 ### vpc
@@ -36,7 +37,7 @@ module "vpc" {
 
 ### emr
 module "emr-studio" {
-  depends_on = [module.vpc, module.s3]
+  depends_on = [module.vpc, module.datalake]
   source     = "Young-ook/emr/aws//modules/emr-studio"
   version    = "0.0.4"
   name       = var.name
@@ -44,10 +45,10 @@ module "emr-studio" {
   subnets    = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
   studio = {
     auth_mode           = "IAM"
-    default_s3_location = "s3://${module.s3.bucket.bucket}/data"
+    default_s3_location = "s3://${module.datalake.s3.bucket.bucket}/data"
     policy_arns = [
-      module.s3.policy_arns["read"],
-      module.s3.policy_arns["write"],
+      module.datalake.s3.policy_arns["read"],
+      module.datalake.s3.policy_arns["write"],
     ]
   }
 }
@@ -81,105 +82,9 @@ module "eks" {
   name                = var.name
   tags                = var.tags
   subnets             = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
-  kubernetes_version  = "1.25"
+  kubernetes_version  = "1.27"
   enable_ssm          = true
   managed_node_groups = var.managed_node_groups
-}
-
-### s3
-module "s3" {
-  source        = "Young-ook/sagemaker/aws//modules/s3"
-  version       = "0.3.4"
-  name          = var.name
-  tags          = var.tags
-  force_destroy = var.force_destroy
-  bucket_policy = {
-    vpce-only = {
-      policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [
-          {
-            Sid = "AllowAccessFromVpcEndpoint"
-            Action = [
-              "s3:GetObject",
-              "s3:PutObject",
-              "s3:ListBucket"
-            ]
-            Effect = "Deny"
-            Principal = {
-              AWS = flatten([module.aws.caller.account_id, ])
-            }
-            Resource = [join("/", [module.s3.bucket.arn, "*"]), module.s3.bucket.arn, ]
-            Condition = {
-              StringNotEquals = {
-                "aws:sourceVpce" = module.vpc.vpce.s3.id
-              }
-            }
-          },
-          {
-            Sid    = "AllowTerraformToReadBuckets"
-            Action = "s3:ListBucket"
-            Effect = "Allow"
-            Principal = {
-              AWS = flatten([module.aws.caller.account_id, ])
-            }
-            Resource = [module.s3.bucket.arn, ]
-          }
-        ]
-      })
-    }
-  }
-  lifecycle_rules = [
-    {
-      id     = "s3-intelligent-tiering"
-      status = "Enabled"
-      filter = {
-        prefix = ""
-      }
-      transition = [
-        {
-          days = 0
-          # valid values for 'storage_class':
-          #   STANDARD_IA, ONEZONE_IA, INTELLIGENT_TIERING,
-          #   GLACIER, DEEP_ARCHIVE, GLACIER_IR
-          storage_class = "INTELLIGENT_TIERING"
-        },
-      ]
-    },
-  ]
-  intelligent_tiering_archive_rules = [
-    {
-      state = "Enabled"
-      filter = [
-        {
-          prefix = "logs/"
-          tags = {
-            priority = "high"
-            class    = "blue"
-          }
-        },
-      ]
-      tiering = [
-        {
-          # allowed values for 'access_tier':
-          #   ARCHIVE_ACCESS, DEEP_ARCHIVE_ACCESS
-          access_tier = "ARCHIVE_ACCESS"
-          days        = 125
-        },
-        {
-          access_tier = "DEEP_ARCHIVE_ACCESS"
-          days        = 180
-        },
-      ]
-    }
-  ]
-}
-
-### datalake
-module "lf" {
-  source    = "./lf"
-  s3_arn    = module.s3.bucket.arn
-  s3_bucket = module.s3.bucket.id
 }
 
 ### redshift
