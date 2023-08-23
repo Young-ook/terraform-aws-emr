@@ -1,13 +1,13 @@
 [[English](README.md)] [[한국어](README.ko.md)]
 
 # Data Lake Bluprint
-This is Data Lake Blueprint example helps you compose complete EMR and Redshift clusters that are fully bootstrapped with the operational software that is needed to deploy and operate workloads. With this Blueprint example, you describe the configuration for the desired state of your analytics platform with EMR/Redshift clusters, such as the control plane, worker nodes, as an Infrastructure as Code (IaC) template/blueprint. Once a blueprint is configured, you can use it to stamp out consistent environments across multiple AWS accounts and Regions using your automation workflow tool, such as Jenkins, CodePipeline. Also, you can use this Blueprint to easily bootstrap EMR and Redshift clusters with a wide range of popular open-source analytics solutions such as Hadoop, Spark and more. Data Lake Blueprint also helps you implement relevant security controls needed to operate workloads from multiple teams in the same cluster.
+This is Data Lake Blueprint example helps you compose complete EMR and Redshift clusters that are fully bootstrapped with the operational software that is needed to deploy and operate workloads. With this Blueprint example, you describe the configuration for the desired state of your analytics platform with EMR/Redshift clusters as an Infrastructure as Code (IaC) template/blueprint. Once a blueprint is configured, you can use it to stamp out consistent environments across multiple AWS accounts and Regions using your automation workflow tool, such as Jenkins, CodePipeline. Also, you can use this Blueprint to easily bootstrap Redshift clusters or EMR with a wide range of popular open-source analytics solutions such as Hadoop, Spark and more. Data Lake Blueprint also helps you implement relevant security controls needed to operate workloads from multiple teams in your analytics platform.
 
 ![aws-emr-explorer](../../images/aws-emr-explorer.png)
 
 ## Setup
 ### Prerequisites
-This module requires *eksctl* which is an open-source cli tool for EKS cluster management. In this example, we will use *eksctl* to create kubernetes access control objects for EMR integration. Follow the [instructions](https://github.com/weaveworks/eksctl#installation) for eksctl installation. And if you don't have the terraform and kubernetes tools in your environment, go to the main [page](https://github.com/Young-ook/terraform-aws-eks) of this repository and follow the installation instructions.
+This module requires *eksctl* which is an open-source cli tool for EMR on EKS cluster management. In this example, we will use *eksctl* to create kubernetes access control objects for EMR integration. Follow the [instructions](https://github.com/weaveworks/eksctl#installation) for eksctl installation. And if you don't have the terraform and kubernetes tools in your environment, go to the [install guide](https://github.com/Young-ook/terraform-aws-eks) and follow the instructions.
 
 :warning: **This example requires the eksctl version 0.135.0 or higher**
 
@@ -80,7 +80,7 @@ terraform apply -var-file fixture.graviton.tfvars
 ```
 
 ## Storage
-Amazon S3 (Simple Storage Service) is an object storage service that offers industry-leading scalability, data availability, security, and performance. In this blueprint, you use an s3 bucket for machine learning datas. And you can utilize s3 lifecycle configuration to enable intelligent-tiering that switches storage classes automatically based on object access pattern. This is important because it is easist way to reduce the storage cost of large volume datas for mahcine learning workloads.
+Amazon S3 (Simple Storage Service) is an object storage service that offers industry-leading scalability, data availability, security, and performance. In this blueprint, you use an s3 bucket for data lake and big data analytics. And you can utilize s3 lifecycle configuration to enable intelligent-tiering that switches storage classes automatically based on object access pattern. This is important because it is easist way to reduce the storage cost of large volume datas for data lake.
 
 ![aws-s3-lc-int-tiering](../../images/aws-s3-lc-int-tiering.png)
 
