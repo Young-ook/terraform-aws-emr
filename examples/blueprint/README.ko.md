@@ -3,7 +3,7 @@
 # 데이터 레이크 블루프린트 (Data Lake Bluprint)
 이 데이터 레이크 블루프린트 예제는 워크로드를 배포하고 운영하는 데 필요한 운영 소프트웨어를 포함하여 자동으로 EMR 및 Redshift 클러스터를 구성하는 데 도움을 줍니다. 이 블루프린트 예제를 활용하면 EMR/Redshift 클러스터 기반의 분석 플랫폼에 대한 구성을 IaC(Infrastructure as Code) 템플릿/블루프린트로 설명할 수 있습니다. 블루프린트가 구성되면 이를 사용하여 Jenkins, CodePipeline과 같은 자동화 워크플로 도구를 사용하여 여러 AWS 계정 및 리전 전반에서 일관된 환경을 스탬핑할 수 있습니다. 또한, 이 블루프린트를 사용하여 Hadoop, Spark 등과 같이 널리 사용되는 다양한 오픈 소스 분석 솔루션을 EMR 위에 구성하거나, Redshift 클러스터를 쉽게 구성할 수 있습니다. 또한, 데이터 레이크 블루프린트는 여러 팀의 워크로드를 운영하는 데 필요한 관련 보안 제어를 구현 방법을 보여 줍니다.
 
-![aws-emr-explorer](../../images/aws-emr-explorer.png)
+![analytics-datalake-portfolio](../../images/analytics-datalake-portfolio.png)
 
 ## 설치
 ### 필수요소
@@ -70,6 +70,11 @@ Amazon EMR on Amazon EKS는 컨테이너 기반 접근 방식을 사용하여 �
 
 ![aws-emr-on-eks-deployment](../../images/aws-emr-on-eks-deployment.png)
 
+## Amazon Redshift
+Amazon Redshift는 데이터 웨어하우스, 운영 데이터베이스, 데이터 레이크 전반에서 SQL을 사용하여 정형 및 반정형 데이터를 분석하는 데이터 웨어하우스 제품으로, AWS가 설계한 하드웨어와 머신 러닝을 사용하여 모든 규모에서 최고의 가격 대비 성능을 제공합니다.
+
+![aws-redshift-datalake](../../images/aws-redshift-datalake.png)
+
 ## 컴퓨팅 옵션들
 ### AWS 그래비톤 (Graviton)
 [AWS 그래비톤 (Graviton)](https://aws.amazon.com/ec2/graviton/) 프로세서는 Amazon EC2에서 실행되는 클라우드 워크로드를 최고의 가격 대비 성능을 제공하기 위해 64비트 ARM Neoverse 코어를 사용하여 Amazon Web Services에서 맞춤 제작한 했습니다. 새로운 범용(M6g), 컴퓨팅 최적화(C6g), 메모리 최적화(R6g) 인스턴스는 웹 서버, 컨테이너형 마이크로서비스, 캐싱 플릿, 분산 데이터 스토어와 같은 스케일아웃 및 Arm 기반 애플리케이션을 위해 동급의 현세대 x86 기반 인스턴스 대비 최대 40% 향상된 가격 대비 성능을 제공하며, 광범위한 Arm 에코시스템에서 지원됩니다. 클러스터 내에서 x86 및 Arm 기반 EC2 인스턴스를 혼합할 수 있으며, 기존 환경에서 Arm 기반 애플리케이션을 쉽게 평가할 수 있습니다. 다음은 AWS Graviton 사용을 시작하는 방법에 대한 유용한 [시작하기](https://github.com/aws/aws-graviton-getting-started) 가이드입니다. AWS Graviton 프로세서를 위한 애플리케이션 빌드, 실행 및 최적화 방법에 대한 자세한 내용을 GitHub 저장소의 가이드에서 확인할 수 있습니다.
@@ -115,3 +120,7 @@ terraform destroy -var-file fixture.tc1.tfvars
 ## AWS Lake Formation
 - [Integration Amazon EMR with AWS Lake Formation](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-lake-formation.html)
 - [AWS Lake Formation Workshop](https://catalog.us-east-1.prod.workshops.aws/workshops/78572df7-d2ee-4f78-b698-7cafdb55135d/en-US)
+
+## Amazon Redshift
+- [Extend your Amazon Redshift Data Warehouse to your Data Lake](https://aws.amazon.com/blogs/big-data/extend-your-amazon-redshift-data-warehouse-to-your-data-lake/)
+- [Getting started guide for near-real time operational analytics using Amazon Aurora zero-ETL integration with Amazon Redshift](https://aws.amazon.com/blogs/big-data/getting-started-guide-for-near-real-time-operational-analytics-using-amazon-aurora-zero-etl-integration-with-amazon-redshift/)
