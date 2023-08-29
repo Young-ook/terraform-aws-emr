@@ -70,10 +70,17 @@ The following diagram shows the two different deployment models for Amazon EMR.
 
 ![aws-emr-on-eks-deployment](../../images/aws-emr-on-eks-deployment.png)
 
-## Amazon Redshift
-Amazon Redshift is a data warehouse product which uses SQL to analyze structured and semi-structured data across data warehouses, operational databases, and data lakes, using AWS-designed hardware and machine learning to deliver the best price performance at any scale.
+## Amazon Redshift Serverless
+Amazon Redshift is a data warehouse product which uses SQL to analyze structured and semi-structured data across data warehouses, operational databases, and data lakes, using AWS-designed hardware and machine learning to deliver the best price performance at any scale. [Amazon Redshift Serverless](https://aws.amazon.com/redshift/redshift-serverless/) makes it easy to run analytics workloads of any size without having to manage  data warehouse infrastructure. Developers, data scientists, and analysts can work across databases, data warehouses, and data lakes to build reporting and dash boarding applications, perform real-time analytics, share and collaborate on data, and build and train machine learning models. With Redshift, you can get insights from large amounts of data in seconds. It automatically provisions and scales data warehouse capacity to deliver fast performance for even the most demanding workloads, and you only pay for what you use.
 
 ![aws-redshift-datalake](../../images/aws-redshift-datalake.png)
+
+![aws-redshift-query-editor-tickit-table](../../images/aws-redshift-query-editor-tickit-table.png)
+
+## Amazon Redshift Spectrum
+Using [Amazon Redshift Spectrum](https://docs.aws.amazon.com/redshift/latest/dg/c-using-spectrum.html), you can efficiently query and retrieve structured and semistructured data from files in Amazon S3 without having to load the data into Amazon Redshift tables. Redshift Spectrum queries employ massive parallelism to run very fast against large datasets. Much of the processing occurs in the Redshift Spectrum layer, and most of the data remains in Amazon S3. Multiple clusters can concurrently query the same dataset in Amazon S3 without the need to make copies of the data for each cluster.
+
+![aws-redshift-spectrum](../../images/aws-redshift-spectrum.png)
 
 ## Computing options
 ### AWS Graviton
@@ -124,3 +131,4 @@ terraform destroy -var-file fixture.tc1.tfvars
 ## Amazon Redshift
 - [Extend your Amazon Redshift Data Warehouse to your Data Lake](https://aws.amazon.com/blogs/big-data/extend-your-amazon-redshift-data-warehouse-to-your-data-lake/)
 - [Getting started guide for near-real time operational analytics using Amazon Aurora zero-ETL integration with Amazon Redshift](https://aws.amazon.com/blogs/big-data/getting-started-guide-for-near-real-time-operational-analytics-using-amazon-aurora-zero-etl-integration-with-amazon-redshift/)
+- [Getting started with Amazon Redshift Spectrum](https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum.html)

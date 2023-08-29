@@ -70,10 +70,17 @@ Amazon EMR on Amazon EKS는 컨테이너 기반 접근 방식을 사용하여 �
 
 ![aws-emr-on-eks-deployment](../../images/aws-emr-on-eks-deployment.png)
 
-## Amazon Redshift
-Amazon Redshift는 데이터 웨어하우스, 운영 데이터베이스, 데이터 레이크 전반에서 SQL을 사용하여 정형 및 반정형 데이터를 분석하는 데이터 웨어하우스 제품으로, AWS가 설계한 하드웨어와 머신 러닝을 사용하여 모든 규모에서 최고의 가격 대비 성능을 제공합니다.
+## Amazon Redshift Serverless
+Amazon Redshift는 데이터 웨어하우스, 운영 데이터베이스, 데이터 레이크 전반에서 SQL을 사용하여 정형 및 반정형 데이터를 분석하는 데이터 웨어하우스 제품으로, AWS가 설계한 하드웨어와 머신 러닝을 사용하여 모든 규모에서 최고의 가격 대비 성능을 제공합니다. [Amazon Redshift Serverless](https://aws.amazon.com/ko/redshift/redshift-serverless/)를 사용하면 데이터 웨어하우스 인프라를 관리하지 않고도 모든 규모의 분석 워크로드를 손쉽게 실행할 수 있습니다. 개발자, 데이터 사이언티스트, 분석가는 데이터베이스, 데이터 웨어하우스, 데이터 레이크에서 작업하여 보고서 및 대시보드 애플리케이션을 구축하고, 실시간 분석을 수행하고, 데이터를 공유 및 협업하며, 기계 학습 모델을 구축 및 훈련할 수 있습니다. Redshift를 사용하면 대량의 데이터에서 몇 초 만에 인사이트를 얻을 수 있습니다. 데이터 웨어하우스 용량이 자동으로 프로비저닝되고 확장되므로 가장 까다로운 워크로드에도 빠른 성능을 제공할 수 있으며 요금은 사용한 만큼만 부과됩니다.
 
 ![aws-redshift-datalake](../../images/aws-redshift-datalake.png)
+
+![aws-redshift-query-editor-tickit-table](../../images/aws-redshift-query-editor-tickit-table.png)
+
+## Amazon Redshift Spectrum
+[Amazon Redshift Spectrum](https://docs.aws.amazon.com/ko_kr/redshift/latest/dg/c-using-spectrum.html)을 사용하면 데이터를 Amazon Redshift 테이블에 로드하지 않고도 Amazon S3의 파일에서 정형 및 비정형 데이터를 효율적으로 쿼리하고 가져올 수 있습니다. Redshift Spectrum 쿼리는 대량 병렬 처리를 채택해 큰 데이터 집합에 대해 매우 빠르게 실행됩니다. 대부분의 처리가 Redshift Spectrum 계층에서 이루어지며, 데이터가 대부분 Amazon S3에 그대로 남습니다. 또한 다수의 클러스터가 Amazon S3의 동일한 데이터 집합에 대해 동시에 쿼리를 실행할 수 있기 때문에 각 클러스터의 데이터를 일일이 복사할 필요가 없습니다.
+
+![aws-redshift-spectrum](../../images/aws-redshift-spectrum.png)
 
 ## 컴퓨팅 옵션들
 ### AWS 그래비톤 (Graviton)
@@ -124,3 +131,4 @@ terraform destroy -var-file fixture.tc1.tfvars
 ## Amazon Redshift
 - [Extend your Amazon Redshift Data Warehouse to your Data Lake](https://aws.amazon.com/blogs/big-data/extend-your-amazon-redshift-data-warehouse-to-your-data-lake/)
 - [Getting started guide for near-real time operational analytics using Amazon Aurora zero-ETL integration with Amazon Redshift](https://aws.amazon.com/blogs/big-data/getting-started-guide-for-near-real-time-operational-analytics-using-amazon-aurora-zero-etl-integration-with-amazon-redshift/)
+- [Getting started with Amazon Redshift Spectrum](https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum.html)
