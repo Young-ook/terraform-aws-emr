@@ -3,7 +3,7 @@
 # Data Lake Bluprint
 This is Data Lake Blueprint example helps you compose complete EMR and Redshift clusters that are fully bootstrapped with the operational software that is needed to deploy and operate workloads. With this Blueprint example, you describe the configuration for the desired state of your analytics platform with EMR/Redshift clusters as an Infrastructure as Code (IaC) template/blueprint. Once a blueprint is configured, you can use it to stamp out consistent environments across multiple AWS accounts and Regions using your automation workflow tool, such as Jenkins, CodePipeline. Also, you can use this Blueprint to easily bootstrap Redshift clusters or EMR with a wide range of popular open-source analytics solutions such as Hadoop, Spark and more. Data Lake Blueprint also helps you implement relevant security controls needed to operate workloads from multiple teams in your analytics platform.
 
-![aws-emr-explorer](../../images/aws-emr-explorer.png)
+![analytics-datalake-portfolio](../../images/analytics-datalake-portfolio.png)
 
 ## Setup
 ### Prerequisites
@@ -55,9 +55,11 @@ When you are logged in to an Amazon EMR Studio, you can create and configure dif
 
 ## Amazon EMR on Amazon EKS
 Amazon EMR on Amazon EKS decouples the analytics job from the services and infrastructure that are processing the job by using a container-based approach. You can focus more on developing your application and less on operating the infrastructure as EMR on EKS dynamically configures the infrastructure based on the compute, memory, and application dependencies of the job. Infrastructure teams can centrally manage a common compute platform to consolidate EMR workloads with other container-based applications. Multiple teams, organizations, or business units can simultaneously and independently run their analytics processes on the shared infrastructure while maintaining isolation enabled by Amazon EKS and AWS Identity and Access Management (IAM). When you submit a job to Amazon EMR, your job definition contains all of its application-specific parameters. Amazon EMR uses these parameters to instruct Amazon EKS about which pods and containers to deploy. Amazon EKS then brings online the computing resources from Amazon EC2 and AWS Fargate required to run the job. With this loose coupling of services, you can run multiple, securely isolated jobs simultaneously. You can also benchmark the same job with different compute backends or spread your job across multiple Availability Zones to improve availability.
+
 ![aws-emr-on-eks-diagram](../../images/aws-emr-on-eks-diagram.png)
 
 The following diagram illustrates how Amazon EMR on EKS works with other AWS services.
+
 ![aws-emr-on-eks-arch](../../images/aws-emr-on-eks-arch.png)
 
 If you already use Amazon EMR, you can now run Amazon EMR based applications with other types of applications on the same Amazon EKS cluster. This deployment option also improves resource utilization and simplifies infrastructure management across multiple Availability Zones. If you already run big data frameworks on Amazon EKS, you can now use Amazon EMR to automate provisioning and management, and run Apache Spark more quickly.
@@ -65,7 +67,20 @@ If you already use Amazon EMR, you can now run Amazon EMR based applications wit
 If you already run Apache Spark on Amazon EKS, you can get all of the benefits of Amazon EMR like automatic provisioning and scaling and the ability to use the latest fully managed versions of open source big data analytics frameworks. You get an optimized EMR runtime for Apache Spark with 3X faster performance than open source Apache Spark on EKS, a serverless data science experience with EMR Studio and Apache Spark UI, fine grained data access control, and support for data encryption. Your Spark jobs start in seconds vs minutes when compared to EC2 based deployments.
 
 The following diagram shows the two different deployment models for Amazon EMR.
+
 ![aws-emr-on-eks-deployment](../../images/aws-emr-on-eks-deployment.png)
+
+## Amazon Redshift Serverless
+Amazon Redshift is a data warehouse product which uses SQL to analyze structured and semi-structured data across data warehouses, operational databases, and data lakes, using AWS-designed hardware and machine learning to deliver the best price performance at any scale. [Amazon Redshift Serverless](https://aws.amazon.com/redshift/redshift-serverless/) makes it easy to run analytics workloads of any size without having to manage  data warehouse infrastructure. Developers, data scientists, and analysts can work across databases, data warehouses, and data lakes to build reporting and dash boarding applications, perform real-time analytics, share and collaborate on data, and build and train machine learning models. With Redshift, you can get insights from large amounts of data in seconds. It automatically provisions and scales data warehouse capacity to deliver fast performance for even the most demanding workloads, and you only pay for what you use.
+
+![aws-redshift-datalake](../../images/aws-redshift-datalake.png)
+
+![aws-redshift-query-editor-tickit-table](../../images/aws-redshift-query-editor-tickit-table.png)
+
+## Amazon Redshift Spectrum
+Using [Amazon Redshift Spectrum](https://docs.aws.amazon.com/redshift/latest/dg/c-using-spectrum.html), you can efficiently query and retrieve structured and semistructured data from files in Amazon S3 without having to load the data into Amazon Redshift tables. Redshift Spectrum queries employ massive parallelism to run very fast against large datasets. Much of the processing occurs in the Redshift Spectrum layer, and most of the data remains in Amazon S3. Multiple clusters can concurrently query the same dataset in Amazon S3 without the need to make copies of the data for each cluster.
+
+![aws-redshift-spectrum](../../images/aws-redshift-spectrum.png)
 
 ## Computing options
 ### AWS Graviton
@@ -112,3 +127,8 @@ terraform destroy -var-file fixture.tc1.tfvars
 ## AWS Lake Formation
 - [Integration Amazon EMR with AWS Lake Formation](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-lake-formation.html)
 - [AWS Lake Formation Workshop](https://catalog.us-east-1.prod.workshops.aws/workshops/78572df7-d2ee-4f78-b698-7cafdb55135d/en-US)
+
+## Amazon Redshift
+- [Extend your Amazon Redshift Data Warehouse to your Data Lake](https://aws.amazon.com/blogs/big-data/extend-your-amazon-redshift-data-warehouse-to-your-data-lake/)
+- [Getting started guide for near-real time operational analytics using Amazon Aurora zero-ETL integration with Amazon Redshift](https://aws.amazon.com/blogs/big-data/getting-started-guide-for-near-real-time-operational-analytics-using-amazon-aurora-zero-etl-integration-with-amazon-redshift/)
+- [Getting started with Amazon Redshift Spectrum](https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum.html)
