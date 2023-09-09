@@ -62,5 +62,12 @@ terraform apply
 ```
 
 # Additional Resources
-## Amazon EMR
-- [Amazon EMR Migration Guide - How to Move Apache Spark and Apache Hadoop From On-Premises to AWS](https://pages.awscloud.com/rs/112-TZM-766/images/amazon_emr_migration_guide_mkto.pdf)
+## Data Lake
+- [Data Lake](https://en.wikipedia.org/wiki/Data_lake)
+- [What is a data lake?](https://aws.amazon.com/big-data/datalakes-and-analytics/what-is-a-data-lake/)
+- [Introduction to Data Lakes](https://www.databricks.com/discover/data-lakes)
+
+## Data Mesh
+- [Data Mesh: A Monolithic Data Lake to a Distributed Data Mesh](https://martinfowler.com/articles/data-monolith-to-mesh.html)
+- [Data Mesh Architecture](https://www.datamesh-architecture.com/)
+- [Amazon DataZone - Data Mesh and Modern Data Architecture on AWS](https://youtu.be/arA-s8GTs6c?si=BsYUgAWNLrbsGbi8)
