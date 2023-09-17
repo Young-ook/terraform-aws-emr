@@ -27,6 +27,8 @@ terraform apply
 
 # Additional Resources
 ## Amazon Redshift
+- [Amazon Redshift System and Architecture Overview](https://docs.aws.amazon.com/redshift/latest/dg/c_redshift_system_overview.html)
+
 ## Amazon Redshift Serverless
 - [Compute capacity for Amazon Redshift Serverless](https://docs.aws.amazon.com/redshift/latest/mgmt/serverless-capacity.html)
 - [Introducing Amazon Redshift Serverless – Run Analytics At Any Scale Without Having to Manage Data Warehouse Infrastructure](https://aws.amazon.com/blogs/aws/introducing-amazon-redshift-serverless-run-analytics-at-any-scale-without-having-to-manage-infrastructure/)
