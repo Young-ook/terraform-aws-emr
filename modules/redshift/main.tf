@@ -124,6 +124,17 @@ resource "aws_redshift_cluster" "dw" {
   }
 }
 
+resource "aws_redshift_usage_limit" "dw" {
+  for_each           = { for k, v in lookup(var.cluster, "usage_limits", []) : k => v if local.provisioned_mode }
+  cluster_identifier = aws_redshift_cluster.dw["enabled"].id
+  tags               = merge(local.default-tags, var.tags)
+  amount             = each.value.amount
+  feature_type       = each.value.feature_type
+  limit_type         = each.value.limit_type
+  period             = try(each.value.period, null)
+  breach_action      = try(each.value.breach_action, null)
+}
+
 ### datawarehouse/serverless
 resource "awscc_redshiftserverless_namespace" "dw" {
   for_each                        = local.serverless_mode ? toset(["enabled"]) : []
