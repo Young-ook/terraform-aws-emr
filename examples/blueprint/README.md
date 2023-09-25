@@ -1,6 +1,6 @@
 [[English](README.md)] [[한국어](README.ko.md)]
 
-# Data Lake Bluprint
+# Data Lake Blueprint
 This is Data Lake Blueprint example helps you compose complete EMR and Redshift clusters that are fully bootstrapped with the operational software that is needed to deploy and operate workloads. With this Blueprint example, you describe the configuration for the desired state of your analytics platform with EMR/Redshift clusters as an Infrastructure as Code (IaC) template/blueprint. Once a blueprint is configured, you can use it to stamp out consistent environments across multiple AWS accounts and Regions using your automation workflow tool, such as Jenkins, CodePipeline. Also, you can use this Blueprint to easily bootstrap Redshift clusters or EMR with a wide range of popular open-source analytics solutions such as Hadoop, Spark and more. Data Lake Blueprint also helps you implement relevant security controls needed to operate workloads from multiple teams in your analytics platform.
 
 ![analytics-datalake-portfolio](../../images/analytics-datalake-portfolio.png)
