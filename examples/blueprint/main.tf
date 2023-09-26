@@ -101,7 +101,6 @@ module "redshift" {
 
 ### application/workbench
 module "ec2" {
-  depends_on = [module.redshift]
   source     = "Young-ook/ssm/aws"
   version    = "1.0.5"
   name       = var.name
@@ -115,6 +114,16 @@ module "ec2" {
       desired_size  = 1
       instance_type = "m6i.large"
       tags          = { purpose = "workbench" }
+    },
+    {
+      name          = "kinesis"
+      min_size      = 1
+      max_size      = 1
+      desired_size  = 1
+      instance_type = "t3.large"
+      user_data     = "yum update -y && yum install -y aws-kinesis-agent"
+      tags          = { purpose = "publish logs" }
+      policy_arns   = [module.datalake.policy.kinesis-firehose-write]
     },
   ]
 }

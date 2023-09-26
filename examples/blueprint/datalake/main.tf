@@ -22,7 +22,70 @@ locals {
   }
 }
 
-### s3
+### security/policy
+resource "aws_iam_role" "firehose" {
+  name = "terraform-aws-emr-datalake-kinesis-firehose"
+  tags = var.tags
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = format("firehose.%s", module.aws.partition.dns_suffix)
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "firehose-write-to-bucket" {
+  name = "terraform-aws-emr-datalake-kinesis-firehose-write-s3"
+  role = aws_iam_role.firehose.name
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = [
+        "s3:AbortMultipartUpload",
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:ListBucketMultipartUploads",
+        "s3:PutObject",
+      ]
+      Effect   = "Allow"
+      Resource = [join("/", [module.s3.bucket.arn, "*"]), module.s3.bucket.arn, ]
+    }]
+  })
+}
+
+resource "aws_iam_policy" "put-record-to-firehose" {
+  name = "terraform-aws-emr-datalake-put-record-to-kinesis"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = [
+        "firehose:PutRecord",
+        "firehose:PutRecordBatch"
+      ]
+      Effect   = "Allow"
+      Resource = [aws_kinesis_firehose_delivery_stream.firehose.arn]
+    }]
+  })
+}
+
+### stream
+resource "aws_kinesis_firehose_delivery_stream" "firehose" {
+  name        = "terraform-aws-emr-datalake-kinesis-firehose"
+  tags        = var.tags
+  destination = "extended_s3"
+
+  extended_s3_configuration {
+    role_arn   = aws_iam_role.firehose.arn
+    bucket_arn = module.s3.bucket.arn
+  }
+}
+
+### storage
 module "s3" {
   source        = "Young-ook/sagemaker/aws//modules/s3"
   version       = "0.3.4"
