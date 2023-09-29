@@ -7,8 +7,8 @@
 
 ## Examples
 - [Amazon SageMaker Blueprint](https://github.com/Young-ook/terraform-aws-sagemaker/tree/main/examples/blueprint)
+- [Analytics on AWS](https://github.com/Young-ook/terraform-aws-emr/tree/main/examples/blueprint)
 - [Data on Amazon EKS](https://github.com/Young-ook/terraform-aws-eks/blob/main/examples/data-ai)
-- [Data Lake Blueprint](https://github.com/Young-ook/terraform-aws-emr/tree/main/examples/blueprint)
 
 ## Getting started
 ### AWS CLI
