@@ -7,7 +7,7 @@ This is Data Lake Blueprint example helps you compose complete EMR and Redshift 
 
 ## Setup
 ### Prerequisites
-This module requires *eksctl* which is an open-source cli tool for EMR on EKS cluster management. In this example, we will use *eksctl* to create kubernetes access control objects for EMR integration. Follow the [instructions](https://github.com/weaveworks/eksctl#installation) for eksctl installation. And if you don't have the terraform and kubernetes tools in your environment, go to the [install guide](https://github.com/Young-ook/terraform-aws-eks) and follow the instructions.
+This module requires *eksctl* which is an open-source cli tool for EKS cluster management. In this example, we will use *eksctl* to create kubernetes access control objects for EMR integration. Follow the [instructions](https://github.com/weaveworks/eksctl#installation) for eksctl installation. And if you don't have the terraform and kubernetes tools in your environment, go to the [install guide](https://github.com/Young-ook/terraform-aws-eks) and follow the instructions.
 
 :warning: **This example requires the eksctl version 0.135.0 or higher**
 
@@ -121,9 +121,6 @@ terraform destroy -var-file fixture.tc1.tfvars
 ```
 
 # Additional Resources
-## Apache Spark on AWS considerations
-![spark-on-aws-considerations](../../images/spark-on-aws-considerations.png)
-
 ## Amazon EMR
 - [Amazon EMR Migration Guide - How to Move Apache Spark and Apache Hadoop From On-Premises to AWS](https://pages.awscloud.com/rs/112-TZM-766/images/amazon_emr_migration_guide_mkto.pdf)
 
@@ -135,6 +132,9 @@ terraform destroy -var-file fixture.tc1.tfvars
 ## Apache Iceberg
 - [Apache Iceberg - A Table Format for Huge Analytic Datasets](https://youtu.be/mf8Hb0coI6o?si=EaJkpa3J6WKrgLrz)
 - [Apache Iceberg - An Architectural Look Under the Covers](https://www.dremio.com/resources/guides/apache-iceberg-an-architectural-look-under-the-covers/)
+
+## Apache Spark on AWS considerations
+![spark-on-aws-considerations](../../images/spark-on-aws-considerations.png)
 
 ## AWS Lake Formation
 - [Integration Amazon EMR with AWS Lake Formation](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-lake-formation.html)

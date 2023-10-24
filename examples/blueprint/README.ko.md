@@ -7,7 +7,7 @@
 
 ## 설치
 ### 필수요소
-이 모듈에는 EMR on EKS 클러스터 관리를 위한 오픈 소스 명령줄 도구인 *eksctl*이 필요합니다. 이 예제에서는 *eksctl*을 사용하여 EMR 연동을 위한 쿠버네티스 접근 제어 오브젝트를 생성합니다. [설치 안내](https://github.com/weaveworks/eksctl#installation)에 따라 eksctl을 설치합니다. 사용 중인 환경에 테라폼 및 쿠버네티스 도구가 없는 경우, [설치 안내서](https://github.com/Young-ook/terraform-aws-eks)의 안내를 따르시길 바랍니다.
+이 모듈에는 EKS 클러스터 관리를 위한 오픈 소스 명령줄 도구인 *eksctl*이 필요합니다. 이 예제에서는 *eksctl*을 사용하여 EMR 연동을 위한 쿠버네티스 접근 제어 오브젝트를 생성합니다. [설치 안내](https://github.com/weaveworks/eksctl#installation)에 따라 eksctl을 설치합니다. 사용 중인 환경에 테라폼 및 쿠버네티스 도구가 없는 경우, [설치 안내서](https://github.com/Young-ook/terraform-aws-eks)의 안내를 따르시길 바랍니다.
 
 :warning: **이 예제는 eksctl 0.135.0 또는 그 이상 버전이 필요합니다**
 
@@ -121,9 +121,6 @@ terraform destroy -var-file fixture.tc1.tfvars
 ```
 
 # 추가 정보
-## Apache Spark on AWS considerations
-![spark-on-aws-considerations](../../images/spark-on-aws-considerations.png)
-
 ## Amazon EMR
 - [Amazon EMR Migration Guide - How to Move Apache Spark and Apache Hadoop From On-Premises to AWS](https://pages.awscloud.com/rs/112-TZM-766/images/amazon_emr_migration_guide_mkto.pdf)
 
@@ -131,6 +128,13 @@ terraform destroy -var-file fixture.tc1.tfvars
 - [Extend your Amazon Redshift Data Warehouse to your Data Lake](https://aws.amazon.com/blogs/big-data/extend-your-amazon-redshift-data-warehouse-to-your-data-lake/)
 - [Getting started guide for near-real time operational analytics using Amazon Aurora zero-ETL integration with Amazon Redshift](https://aws.amazon.com/blogs/big-data/getting-started-guide-for-near-real-time-operational-analytics-using-amazon-aurora-zero-etl-integration-with-amazon-redshift/)
 - [Getting started with Amazon Redshift Spectrum](https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum.html)
+
+## Apache Iceberg
+- [Apache Iceberg - A Table Format for Huge Analytic Datasets](https://youtu.be/mf8Hb0coI6o?si=EaJkpa3J6WKrgLrz)
+- [Apache Iceberg - An Architectural Look Under the Covers](https://www.dremio.com/resources/guides/apache-iceberg-an-architectural-look-under-the-covers/)
+
+## Apache Spark on AWS considerations
+![spark-on-aws-considerations](../../images/spark-on-aws-considerations.png)
 
 ## AWS Lake Formation
 - [Integration Amazon EMR with AWS Lake Formation](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-lake-formation.html)
