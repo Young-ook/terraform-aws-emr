@@ -62,6 +62,9 @@ terraform apply
 ```
 
 # Additional Resources
+## Amazon EMR (Elastic MapReduce)
+- [Amazon EMR Migration TCO(Total Cost of Ownership) Simulator](https://github.com/awslabs/migration-hadoop-to-emr-tco-simulator)
+
 ## Data Lake
 - [Data Lake](https://en.wikipedia.org/wiki/Data_lake)
 - [What is a data lake?](https://aws.amazon.com/big-data/datalakes-and-analytics/what-is-a-data-lake/)
