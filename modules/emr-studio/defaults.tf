@@ -1,5 +1,10 @@
 ### default variables
 
+### aws partitions
+module "aws" {
+  source = "Young-ook/spinnaker/aws//modules/aws-partitions"
+}
+
 locals {
   default_studio = {
     # Specifies whether the Studio authenticates users using IAM or Amazon Web Services SSO.
