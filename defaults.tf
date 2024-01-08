@@ -1,5 +1,10 @@
 ### default values
 
+### aws partitions
+module "aws" {
+  source = "Young-ook/spinnaker/aws//modules/aws-partitions"
+}
+
 locals {
   default_instance_type_config = {
     bid_price                                  = null
