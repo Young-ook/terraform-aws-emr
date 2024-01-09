@@ -1,10 +1,6 @@
 ### Amazon EMR Studio
 
-### aws partitions
-module "aws" {
-  source = "Young-ook/spinnaker/aws//modules/aws-partitions"
-}
-
+### features
 locals {
   serverless_enabled = length(var.applications) > 0 ? true : false
 }

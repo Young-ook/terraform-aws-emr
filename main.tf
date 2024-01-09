@@ -1,8 +1,4 @@
-### aws partitions
-module "aws" {
-  source = "Young-ook/spinnaker/aws//modules/aws-partitions"
-}
-
+### parameters
 locals {
   cluster_enabled = var.cluster != null
   scaling         = local.cluster_enabled ? lookup(var.cluster, "scaling", local.default_cluster.scaling) : local.default_cluster.scaling
