@@ -1,4 +1,6 @@
 tags = { example = "datalake_blueprint" }
+
+### emr cluster configuration
 emr_cluster = {
   primary_node_groups = {
     instance_type_configs = [
@@ -36,15 +38,20 @@ emr_cluster = {
     ]
   }
 }
-managed_node_groups = [
-  {
-    name          = "spark"
-    desired_size  = 3
-    min_size      = 3
-    max_size      = 9
-    instance_type = "m5.xlarge"
-  },
-]
+
+### eks cluster configuration
+eks_cluster = {
+  kubernetes_version = "1.27"
+  managed_node_groups = [
+    {
+      name          = "spark"
+      desired_size  = 3
+      min_size      = 3
+      max_size      = 9
+      instance_type = "m5.xlarge"
+    },
+  ]
+}
 
 ### redshift cluster configuration
 redshift_cluster = {

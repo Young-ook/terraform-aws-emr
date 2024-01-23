@@ -83,9 +83,9 @@ module "eks" {
   name                = var.name
   tags                = var.tags
   subnets             = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
-  kubernetes_version  = "1.27"
   enable_ssm          = true
-  managed_node_groups = var.managed_node_groups
+  kubernetes_version  = lookup(var.eks_cluster, "kubernetes_version")
+  managed_node_groups = lookup(var.eks_cluster, "managed_node_groups", [])
 }
 
 ### redshift
