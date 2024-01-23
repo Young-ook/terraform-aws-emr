@@ -55,14 +55,15 @@ module "emr-studio" {
 
 module "emr-ec2" {
   depends_on          = [module.vpc]
+  for_each            = (var.emr_cluster != null ? toset(["enabled"]) : [])
   source              = "Young-ook/emr/aws"
   version             = "0.0.4"
   name                = var.name
   subnets             = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
   cluster             = var.emr_cluster
-  primary_node_groups = var.primary_node_groups
-  core_node_groups    = var.core_node_groups
-  task_node_groups    = var.task_node_groups
+  primary_node_groups = lookup(var.emr_cluster, "primary_node_groups", {})
+  core_node_groups    = lookup(var.emr_cluster, "core_node_groups", {})
+  task_node_groups    = lookup(var.emr_cluster, "task_node_groups", {})
 }
 
 module "emr-eks" {
@@ -101,11 +102,11 @@ module "redshift" {
 
 ### application/workbench
 module "ec2" {
-  source     = "Young-ook/ssm/aws"
-  version    = "1.0.5"
-  name       = var.name
-  tags       = var.tags
-  subnets    = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
+  source  = "Young-ook/ssm/aws"
+  version = "1.0.5"
+  name    = var.name
+  tags    = var.tags
+  subnets = slice(values(module.vpc.subnets[var.use_default_vpc ? "public" : "private"]), 0, 3)
   node_groups = [
     {
       name          = "workbench"

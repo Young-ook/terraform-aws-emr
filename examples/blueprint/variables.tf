@@ -23,21 +23,6 @@ variable "emr_cluster" {
   default     = {}
 }
 
-variable "primary_node_groups" {
-  description = "EMR primary node groups configuration"
-  default     = {}
-}
-
-variable "core_node_groups" {
-  description = "EMR core node groups configuration"
-  default     = {}
-}
-
-variable "task_node_groups" {
-  description = "EMR task node groups configuration"
-  default     = {}
-}
-
 ### kubernetes
 variable "managed_node_groups" {
   description = "Amazon managed node groups definition"
