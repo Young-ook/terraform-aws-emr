@@ -19,14 +19,14 @@ variable "azs" {
 
 ### emr
 variable "emr_cluster" {
-  description = "EMR cluster control plane configuration"
+  description = "EMR cluster configuration"
   default     = {}
 }
 
 ### kubernetes
-variable "managed_node_groups" {
-  description = "Amazon managed node groups definition"
-  default     = []
+variable "eks_cluster" {
+  description = "EKS cluster configuration"
+  default     = {}
 }
 
 ### redshift
