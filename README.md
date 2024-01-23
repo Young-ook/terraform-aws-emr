@@ -65,6 +65,9 @@ terraform apply
 ## Amazon EMR (Elastic MapReduce)
 - [Amazon EMR Migration TCO(Total Cost of Ownership) Simulator](https://github.com/awslabs/migration-hadoop-to-emr-tco-simulator)
 
+## Data Catalog
+- [What are the main features of Data Catalog software](https://www.techtarget.com/searchdatamanagement/answer/What-are-the-main-features-of-data-catalog-software)
+
 ## Data Lake
 - [Data Lake](https://en.wikipedia.org/wiki/Data_lake)
 - [What is a data lake?](https://aws.amazon.com/big-data/datalakes-and-analytics/what-is-a-data-lake/)
