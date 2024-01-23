@@ -139,3 +139,7 @@ terraform destroy -var-file fixture.tc1.tfvars
 ## AWS Lake Formation
 - [Integration Amazon EMR with AWS Lake Formation](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-lake-formation.html)
 - [AWS Lake Formation Workshop](https://catalog.us-east-1.prod.workshops.aws/workshops/78572df7-d2ee-4f78-b698-7cafdb55135d/en-US)
+- [Integrating AWS Lake Formation with Amazon RDS for SQL Server](https://aws.amazon.com/blogs/big-data/integrating-aws-lake-formation-with-amazon-rds-for-sql-server/)
+
+## Data Lake on AWS
+- [Manufacturing Data Lake](https://d1.awsstatic.com/architecture-diagrams/ArchitectureDiagrams/manufacturing-data-lake-ra.pdf)
