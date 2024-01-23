@@ -55,6 +55,7 @@ module "emr-studio" {
 
 module "emr-ec2" {
   depends_on          = [module.vpc]
+  for_each            = (var.emr_cluster != null ? toset(["enabled"]) : [])
   source              = "Young-ook/emr/aws"
   version             = "0.0.4"
   name                = var.name
