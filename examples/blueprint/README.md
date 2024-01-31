@@ -123,11 +123,20 @@ terraform destroy -var-file fixture.tc1.tfvars
 # Additional Resources
 ## Amazon EMR
 - [Amazon EMR Migration Guide - How to Move Apache Spark and Apache Hadoop From On-Premises to AWS](https://pages.awscloud.com/rs/112-TZM-766/images/amazon_emr_migration_guide_mkto.pdf)
+- [Introducing Amazon EMR Managed Scaling – Automatically Resize Clusters to Lower Cost](https://aws.amazon.com/blogs/big-data/introducing-amazon-emr-managed-scaling-automatically-resize-clusters-to-lower-cost/)
+- [ETL on Amazon EMR Workshop](https://catalog.us-east-1.prod.workshops.aws/workshops/c86bd131-f6bf-4e8f-b798-58fd450d3c44/en-US)
+- [EMR on EKS Workshop](https://catalog.us-east-1.prod.workshops.aws/workshops/1f91e1d4-5587-40ff-8d5d-54fc86e0ddc1/en-US)
 
 ## Amazon Redshift
 - [Extend your Amazon Redshift Data Warehouse to your Data Lake](https://aws.amazon.com/blogs/big-data/extend-your-amazon-redshift-data-warehouse-to-your-data-lake/)
 - [Getting started guide for near-real time operational analytics using Amazon Aurora zero-ETL integration with Amazon Redshift](https://aws.amazon.com/blogs/big-data/getting-started-guide-for-near-real-time-operational-analytics-using-amazon-aurora-zero-etl-integration-with-amazon-redshift/)
 - [Getting started with Amazon Redshift Spectrum](https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum.html)
+
+## Apache Flink
+- [Apache Flink Use Cases](https://flink.apache.org/what-is-flink/use-cases/)
+- [Apache Flink on Amazon EMR](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-flink.html)
+- [Streaming Analytics Workshop](https://catalog.us-east-1.prod.workshops.aws/workshops/c342c6d1-2baf-4827-ba42-52ef9eb173f6/en-US)
+- [Querying Amazon Kinesis Streams Directly with SQL and Spark Streaming](https://aws.amazon.com/blogs/big-data/querying-amazon-kinesis-streams-directly-with-sql-and-spark-streaming/)
 
 ## Apache Iceberg
 - [Apache Iceberg - A Table Format for Huge Analytic Datasets](https://youtu.be/mf8Hb0coI6o?si=EaJkpa3J6WKrgLrz)
@@ -143,3 +152,5 @@ terraform destroy -var-file fixture.tc1.tfvars
 
 ## Data Lake on AWS
 - [Manufacturing Data Lake](https://d1.awsstatic.com/architecture-diagrams/ArchitectureDiagrams/manufacturing-data-lake-ra.pdf)
+- [Data Engineering Immersion Day](https://catalog.us-east-1.prod.workshops.aws/workshops/976050cc-0606-4b23-b49f-ca7b8ac4b153/en-US)
+- [Serverless Data Lake Framework Workshop](https://github.com/awslabs/aws-serverless-data-lake-framework)

@@ -28,6 +28,7 @@ terraform apply
 # Additional Resources
 ## Amazon Redshift
 - [Amazon Redshift System and Architecture Overview](https://docs.aws.amazon.com/redshift/latest/dg/c_redshift_system_overview.html)
+- [Amazon Redshift Immersion Day](https://catalog.us-east-1.prod.workshops.aws/workshops/9f29cdba-66c0-445e-8cbb-28a092cb5ba7/en-US/lab0)
 
 ## Amazon Redshift Serverless
 - [Compute capacity for Amazon Redshift Serverless](https://docs.aws.amazon.com/redshift/latest/mgmt/serverless-capacity.html)
