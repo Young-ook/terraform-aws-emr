@@ -1,6 +1,12 @@
 [[English](README.md)] [[한국어](README.ko.md)]
 
 # Applications
+# Amplified Amazon Analytics (A3)
+Amplified Amazon Analytics (A3) is a solution for digital marketing. It helps you analyze customer behavior on the web and in your apps and build marketing strategies to read the market and make key business decisions through user behavior analysis. Additionally, it easily integrates with key AWS services to expand into the analytics and machine learning (ML) ecosystem.
+
+![aws-pp-client-platform](../../../images/aws-pp-client-platform.png)
+![aws-pp-mau](../../../images/aws-pp-mau.png)
+
 ## Pi
 ![aws-emr-on-eks-job-pyspark-pi](../../../images/aws-emr-on-eks-job-pyspark-pi.png)
 ![spark-ui-job-history-pyspark-pi](../../../images/spark-ui-job-history-pyspark-pi.png)
