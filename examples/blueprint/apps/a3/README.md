@@ -15,19 +15,8 @@ ChatApp is a sample application to show how A3 works for digital marketing platf
 ![aws-pp-revenue](../../../../images/aws-pp-revenue.png)
 
 ## Getting Started
-### Clone repo
-Download exmaple:
-```
-git clone git@github.com:Young-ook/amplified-amazon-analytics.git
-```
-And change directory to the project source
-```
-cd amplified-amazon-analytics
-```
-
 ### Install React packages
-To run the application, you must install reactstrap and npm dependencies on your workspace.\
-Run npm-install command to download and install packages:
+Move the *terraform-aws-emr/examples/blueprint/apps/a3* directory. And install reactstrap and npm dependencies on your workspace to build the application. Run npm-install command to download and install packages:
 ```
 npm install reactstrap
 ```
